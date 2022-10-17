@@ -35,8 +35,8 @@ const MobileMenu = () => {
             </div>
             {isMenu && (
                 <nav
-                    className={`flex absolute min-h-screen top-16 w-[100%] left-0 text-slate-700 bg-slate-700/30 shadow-lg p-5 rounded  justify-start  ${
-                        isMenu ? '' : '-translate-x-80'
+                    className={`flex absolute min-h-screen  w-[100%] left-0 text-slate-700 bg-slate-700/30 shadow-lg p-5 rounded transition-all duration-500 ease-in justify-start  ${
+                        isMenu ? 'top-16 opacity-100' : 'top-[-490px] opacity-0'
                     } flex-col items-center backdrop-blur-sm`}
                 >
                     <ul className="flex justify-between flex-col items-center list-none gap-2">
