@@ -57,16 +57,16 @@ const Login = () => {
                         <span className="flex-shrink mx-2 text-gray-400">OR</span>
                         <div className="flex-grow border-t-2 border-gray-400"></div>
                     </div>
-                    <span className="bg-orange-600 cursor-pointer flex justify-center items-center gap-3 text-white px-3 py-2 w-full transition duration-100 ease-in-out rounded active:scale-90">
-                        <FcGoogle className="h-5 w-5 rounded-full bg-gray-50" /> Login With Google
-                    </span>
-                    <span className="flex justify-start gap-2 text-gray-600">
-                        <p>Don't have an account? </p>
-                        <Link to="/register">
-                            <span className="text-blue-600"> Register</span>
-                        </Link>
-                    </span>
                 </form>
+                <button className="bg-orange-600 cursor-pointer flex justify-center items-center gap-3 text-white px-3 py-2 w-full transition duration-100 ease-in-out rounded active:scale-90">
+                    <FcGoogle className="h-5 w-5 rounded-full bg-gray-50" /> Login With Google
+                </button>
+                <span className="flex justify-start gap-2 pt-2 text-gray-600">
+                    <p>Don't have an account? </p>
+                    <Link to="/register">
+                        <span className="text-blue-600"> Register</span>
+                    </Link>
+                </span>
             </div>
         </section>
     );
