@@ -6,9 +6,11 @@ import { auth } from '../../firebase/config';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { userLoggedIn, userLoggedOut } from '../../redux/authSlice/authSlice';
+import ShowOnLogIn from '../../pages/HiddenLink/ShowOnLogIn';
+import ShowOnLogOut from '../../pages/HiddenLink/ShowonLogOut';
 
 const DesktopMenu = () => {
-    const { isLoggedIn, email, userName, userId, userImage } = useSelector((state) => state.auth);
+    const { isLoggedIn, userName, userImage } = useSelector((state) => state.auth);
     const [uName, setUname] = useState('');
     const activeClass = (state) => (state.isActive ? `text-orange-600 border-b-2` : '');
     //assigning location variable
@@ -57,6 +59,7 @@ const DesktopMenu = () => {
                 );
                 // ...
             } else {
+                dispatch(userLoggedOut());
             }
         });
     }, [dispatch, uName]);
@@ -92,26 +95,32 @@ const DesktopMenu = () => {
                 </ul>
                 <div className="flex justify-between items-center gap-4">
                     <div className="flex justify-between items-center gap-4">
-                        <NavLink to="/login" className={activeClass}>
-                            <span className="hover:text-orange-600 transition duration-100">
-                                Login
-                            </span>
-                        </NavLink>
-                        <NavLink to="/register" className={activeClass}>
-                            <span className="hover:text-orange-600 transition duration-100">
-                                Register
-                            </span>
-                        </NavLink>
+                        <ShowOnLogOut>
+                            <NavLink to="/login" className={activeClass}>
+                                <span className="hover:text-orange-600 transition duration-100">
+                                    Login
+                                </span>
+                            </NavLink>
+                        </ShowOnLogOut>
+                        <ShowOnLogOut>
+                            <NavLink to="/register" className={activeClass}>
+                                <span className="hover:text-orange-600 transition duration-100">
+                                    Register
+                                </span>
+                            </NavLink>
+                        </ShowOnLogOut>
                         <NavLink to="/order-history" className={activeClass}>
                             <span className="hover:text-orange-600 transition duration-100">
                                 My Orders
                             </span>
                         </NavLink>
-                        <NavLink to="/" onClick={logoutUser}>
-                            <span className="hover:text-orange-600 transition duration-100">
-                                Logout
-                            </span>
-                        </NavLink>
+                        <ShowOnLogIn>
+                            <NavLink to="/" onClick={logoutUser}>
+                                <span className="hover:text-orange-600 transition duration-100">
+                                    Logout
+                                </span>
+                            </NavLink>
+                        </ShowOnLogIn>
                     </div>
 
                     <NavLink to="/cart" className={activeClass}>
@@ -120,7 +129,8 @@ const DesktopMenu = () => {
                         </span>
                     </NavLink>
                     {isLoggedIn && (
-                        <div className="flex justify-center items-center cursor-pointer">
+                        <div className="flex justify-center items-center gap-1 cursor-pointer text-orange-600">
+                            <img className="h-8 w-8 rounded-full" src={userImage} alt={userName} />
                             <p>{userName}</p>
                         </div>
                     )}

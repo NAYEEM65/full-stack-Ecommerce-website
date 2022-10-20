@@ -36,8 +36,7 @@ const Login = () => {
     };
     const signinWithGoogle = () => {
         signInWithPopup(auth, provider)
-            .then((result) => {
-                const user = result.user;
+            .then(() => {
                 toast.success('Login success');
                 navigate('/');
                 // ...

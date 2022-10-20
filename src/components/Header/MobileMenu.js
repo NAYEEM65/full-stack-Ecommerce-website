@@ -7,12 +7,15 @@ import { useEffect, useState } from 'react';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { toast } from 'react-toastify';
 import { auth } from '../../firebase/config';
-import { userLoggedIn } from '../../redux/authSlice/authSlice';
+import { userLoggedIn, userLoggedOut } from '../../redux/authSlice/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import ShowOnLogIn from '../../pages/HiddenLink/ShowOnLogIn';
+import ShowOnLogOut from '../../pages/HiddenLink/ShowonLogOut';
 
 const MobileMenu = () => {
-    const { isLoggedIn, email, userName, userId, userImage } = useSelector((state) => state.auth);
+    const { isLoggedIn, userName, userImage } = useSelector((state) => state.auth);
     const [isMenu, setIsMenu] = useState(false);
+    const [uName, setUname] = useState('');
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -37,6 +40,7 @@ const MobileMenu = () => {
                 toast.success('Logout successful.');
                 navigate('/login');
                 setIsMenu(false);
+                dispatch(userLoggedOut());
             })
             .catch((error) => {
                 // An error happened.
@@ -48,19 +52,27 @@ const MobileMenu = () => {
             if (user) {
                 const uid = user.uid;
 
+                if (user.displayName == null) {
+                    const ul = user.email.substring(0, user.email.indexOf('@'));
+                    const uName = ul.charAt(0).toUpperCase() + ul.slice(1);
+                    setUname(uName);
+                } else {
+                    setUname(user.displayName);
+                }
                 dispatch(
                     userLoggedIn({
                         email: user.email,
-                        userName: user.displayName,
+                        userName: user.displayName ? user.displayName : uName,
                         userId: uid,
                         userImage: user.photoURL,
                     }),
                 );
                 // ...
             } else {
+                dispatch(userLoggedOut());
             }
         });
-    }, [dispatch]);
+    }, [dispatch, uName]);
     return (
         <div className="w-full my-0 mx-auto p-4 md:hidden flex flex-col transition duration-200 justify-between relative">
             <div className="flex justify-between items-center gap-2">
@@ -113,25 +125,34 @@ const MobileMenu = () => {
                                 </span>
                             </NavLink>
                         </li>
-                        <li className="my-0 mx-1">
+                        <ShowOnLogOut>
                             {' '}
-                            <NavLink to="/login" className={activeClass} onClick={handleItemClick}>
-                                <span className="hover:text-orange-600 transition duration-100">
-                                    Login
-                                </span>
-                            </NavLink>
-                        </li>
-                        <li className="my-0 mx-1">
-                            <NavLink
-                                to="/register"
-                                className={activeClass}
-                                onClick={handleItemClick}
-                            >
-                                <span className="hover:text-orange-600 transition duration-100">
-                                    Register
-                                </span>
-                            </NavLink>
-                        </li>
+                            <li className="my-0 mx-1">
+                                {' '}
+                                <NavLink
+                                    to="/login"
+                                    className={activeClass}
+                                    onClick={handleItemClick}
+                                >
+                                    <span className="hover:text-orange-600 transition duration-100">
+                                        Login
+                                    </span>
+                                </NavLink>
+                            </li>
+                        </ShowOnLogOut>
+                        <ShowOnLogOut>
+                            <li className="my-0 mx-1">
+                                <NavLink
+                                    to="/register"
+                                    className={activeClass}
+                                    onClick={handleItemClick}
+                                >
+                                    <span className="hover:text-orange-600 transition duration-100">
+                                        Register
+                                    </span>
+                                </NavLink>
+                            </li>
+                        </ShowOnLogOut>
                         <li className="my-0 mx-1">
                             {' '}
                             <NavLink
@@ -145,18 +166,23 @@ const MobileMenu = () => {
                             </NavLink>
                         </li>
                         <li className="my-0 mx-1">
-                            {' '}
-                            <NavLink to="/" onClick={logoutUser}>
-                                <span className="hover:text-orange-600 transition duration-100">
-                                    Logout
-                                </span>
-                            </NavLink>
+                            <ShowOnLogIn>
+                                <NavLink to="/" onClick={logoutUser}>
+                                    <span className="hover:text-orange-600 transition duration-100">
+                                        Logout
+                                    </span>
+                                </NavLink>
+                            </ShowOnLogIn>
                         </li>
                         <li className="my-0 mx-1">
                             {isLoggedIn && (
-                                <span className="flex justify-center items-center cursor-pointer">
+                                <span className="flex justify-center items-center gap-1 cursor-pointer text-orange-600">
+                                    <img
+                                        className="h-8 w-8 rounded-full"
+                                        src={userImage}
+                                        alt={userName}
+                                    />
                                     <p>{userName}</p>
-                                    <img src={userImage} alt="" />
                                 </span>
                             )}
                         </li>
