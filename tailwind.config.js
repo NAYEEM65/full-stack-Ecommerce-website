@@ -20,10 +20,22 @@ module.exports = {
                         transform: 'translateY(0)',
                     },
                 },
+                sliderUp: {
+                    '0%': {
+                        transform: 'translateY(-5rem)',
+                        visibility: 'visible',
+                        top: '23rem',
+                    },
+                    '100% ': {
+                        visibility: 'visible',
+                        top: '17rem',
+                    },
+                },
             },
             animation: {
                 'slide-up': 'slideUp  0.5s ease',
                 'slide-down': 'slideDown  0.5s ease',
+                'slider-up': 'sliderUp  1s ease ease 0.5s forwards',
             },
         },
     },
