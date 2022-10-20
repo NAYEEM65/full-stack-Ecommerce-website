@@ -3,8 +3,8 @@ import accessImage from '../../assets/access-account.svg';
 import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
 import { Link, useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../firebase/config';
+import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { auth, provider } from '../../firebase/config';
 import { toast } from 'react-toastify';
 import Loader from '../../components/Loader/Loader';
 
@@ -32,6 +32,20 @@ const Login = () => {
                 const errorMessage = error.message;
                 toast.error(errorMessage);
                 setIsLoading(false);
+            });
+    };
+    const signinWithGoogle = () => {
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                const user = result.user;
+                toast.success('Login success');
+                navigate('/');
+                // ...
+            })
+            .catch((error) => {
+                // Handle Errors here.
+                const errorMessage = error.message;
+                toast.error(errorMessage);
             });
     };
     return (
@@ -92,7 +106,10 @@ const Login = () => {
                             <div className="flex-grow border-t-2 border-gray-400"></div>
                         </div>
                     </form>
-                    <button className="bg-orange-600 cursor-pointer flex justify-center items-center gap-3 text-white px-3 py-2 w-full transition duration-100 ease-in-out rounded active:scale-90">
+                    <button
+                        onClick={signinWithGoogle}
+                        className="bg-orange-600 cursor-pointer flex justify-center items-center gap-3 text-white px-3 py-2 w-full transition duration-100 ease-in-out rounded active:scale-90"
+                    >
                         <FcGoogle className="h-5 w-5 rounded-full bg-gray-50" /> Login With Google
                     </button>
                     <span className="flex justify-start gap-2 pt-2 text-gray-600">
