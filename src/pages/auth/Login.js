@@ -19,10 +19,10 @@ const Login = () => {
     };
     const loginUser = (e) => {
         e.preventDefault();
+        setIsLoading(true);
         signInWithEmailAndPassword(auth, email, password)
             .then(() => {
                 // Signed in
-
                 setIsLoading(false);
                 toast.success('Login successful');
                 navigate('/');
