@@ -69,7 +69,7 @@ const Register = () => {
                                 placeholder="password"
                                 className="rounded bg-gray-300 border-none relative"
                             />
-                            {!isPassShow ? (
+                            {isPassShow ? (
                                 <AiOutlineEyeInvisible
                                     className="absolute top-3 right-4  text-xl cursor-pointer"
                                     onClick={handlePassShow}
