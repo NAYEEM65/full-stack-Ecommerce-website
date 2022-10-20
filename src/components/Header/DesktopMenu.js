@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { BsCartFill } from 'react-icons/bs';
-import { signOut } from 'firebase/auth';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../../firebase/config';
 import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { userLoggedIn, userLoggedOut } from '../../redux/authSlice/authSlice';
 
 const DesktopMenu = () => {
+    const { isLoggedIn, email, userName, userId, userImage } = useSelector((state) => state.auth);
+    const [uName, setUname] = useState('');
     const activeClass = (state) => (state.isActive ? `text-orange-600 border-b-2` : '');
     //assigning location variable
     const location = useLocation();
     const navigate = useNavigate();
-    console.log(auth);
+    const dispatch = useDispatch();
 
     //destructuring pathname from location
     const { pathname } = location;
@@ -23,12 +27,39 @@ const DesktopMenu = () => {
                 // Sign-out successful.
                 toast.success('Logout successful.');
                 navigate('/login');
+                dispatch(userLoggedOut());
             })
             .catch((error) => {
                 // An error happened.
                 toast.error(error.message);
             });
     };
+
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const uid = user.uid;
+
+                if (user.displayName == null) {
+                    const ul = user.email.substring(0, user.email.indexOf('@'));
+                    const uName = ul.charAt(0).toUpperCase() + ul.slice(1);
+                    setUname(uName);
+                } else {
+                    setUname(user.displayName);
+                }
+                dispatch(
+                    userLoggedIn({
+                        email: user.email,
+                        userName: user.displayName ? user.displayName : uName,
+                        userId: uid,
+                        userImage: user.photoURL,
+                    }),
+                );
+                // ...
+            } else {
+            }
+        });
+    }, [dispatch, uName]);
 
     return (
         <div className="w-full h-20 my-0 mx-auto p-4 md:flex hidden justify-between items-center relative">
@@ -88,6 +119,11 @@ const DesktopMenu = () => {
                             Cart <BsCartFill /> <p className="absolute -top-2 -right-2">0</p>
                         </span>
                     </NavLink>
+                    {isLoggedIn && (
+                        <div className="flex justify-center items-center cursor-pointer">
+                            <p>{userName}</p>
+                        </div>
+                    )}
                 </div>
             </nav>
         </div>

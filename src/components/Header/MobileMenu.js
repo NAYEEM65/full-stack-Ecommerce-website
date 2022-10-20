@@ -3,25 +3,30 @@ import { BsCartFill } from 'react-icons/bs';
 import { BiMenuAltRight } from 'react-icons/bi';
 import { AiOutlineClose } from 'react-icons/ai';
 
-import { useState } from 'react';
-import { signOut } from 'firebase/auth';
+import { useEffect, useState } from 'react';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { toast } from 'react-toastify';
 import { auth } from '../../firebase/config';
+import { userLoggedIn } from '../../redux/authSlice/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const MobileMenu = () => {
+    const { isLoggedIn, email, userName, userId, userImage } = useSelector((state) => state.auth);
     const [isMenu, setIsMenu] = useState(false);
+
+    const location = useLocation();
+    const navigate = useNavigate();
     const handleMenuClick = () => {
         setIsMenu(!isMenu);
     };
     const activeClass = (state) => (state.isActive ? `text-orange-600 border-b-2` : '');
-    const location = useLocation();
-    const navigate = useNavigate();
 
     //destructuring pathname from location
     const { pathname } = location;
 
     //Javascript split method to get the name of the path in array
     const splitLocation = pathname.split('/');
+    const dispatch = useDispatch();
     const handleItemClick = () => {
         setIsMenu(false);
     };
@@ -38,6 +43,24 @@ const MobileMenu = () => {
                 toast.error(error.message);
             });
     };
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const uid = user.uid;
+
+                dispatch(
+                    userLoggedIn({
+                        email: user.email,
+                        userName: user.displayName,
+                        userId: uid,
+                        userImage: user.photoURL,
+                    }),
+                );
+                // ...
+            } else {
+            }
+        });
+    }, [dispatch]);
     return (
         <div className="w-full my-0 mx-auto p-4 md:hidden flex flex-col transition duration-200 justify-between relative">
             <div className="flex justify-between items-center gap-2">
@@ -128,6 +151,14 @@ const MobileMenu = () => {
                                     Logout
                                 </span>
                             </NavLink>
+                        </li>
+                        <li className="my-0 mx-1">
+                            {isLoggedIn && (
+                                <span className="flex justify-center items-center cursor-pointer">
+                                    <p>{userName}</p>
+                                    <img src={userImage} alt="" />
+                                </span>
+                            )}
                         </li>
                     </ul>
                 </nav>
