@@ -8,7 +8,7 @@ import Contact from './pages/Contact/Contact';
 import Home from './pages/Home/Home';
 import { ToastContainer } from 'react-toastify';
 import Admin from './pages/admin/Admin';
-import AdminOnlyRoute from './components/Admin/AdminOnlyRoute';
+import AdminOnlyRoute from './components/Admin/AdminOnly/AdminOnlyRoute';
 function App() {
     return (
         <Router>
