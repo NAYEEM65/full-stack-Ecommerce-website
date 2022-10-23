@@ -16,10 +16,10 @@ const Admin = () => {
             <div className="w-9/12 p-4">
                 <Routes>
                     <Route path="home" element={<Home />} />
-                    <Route path="all-products" element={ViewProducts} />
-                    <Route path="add-product/:id" element={AddProduct} />
-                    <Route path="orders" element={Orders} />
-                    <Route path="order-details/:id" element={OrderDetails} />
+                    <Route path="all-products" element={<ViewProducts />} />
+                    <Route path="add-product" element={<AddProduct />} />
+                    <Route path="orders" element={<Orders />} />
+                    <Route path="order-details/:id" element={<OrderDetails />} />
                 </Routes>
             </div>
         </div>
