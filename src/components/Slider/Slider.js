@@ -38,11 +38,11 @@ const Slider = () => {
     return (
         <div className="slider">
             <AiOutlineLeft
-                className="bg-transparent text-white w-10 h-10 cursor-pointer absolute top-[50%] -translate-y-[50%] z-[2] hover:text-orange-600"
+                className="bg-transparent text-white w-10 h-10 cursor-pointer absolute top-[50%] left-2 rounded -translate-y-[50%] z-[2] hover:text-orange-600 hover:bg-white"
                 onClick={prevSlide}
             />
             <AiOutlineRight
-                className="bg-transparent text-white w-10 h-10 cursor-pointer absolute top-[50%] -translate-y-[50%] z-[2] hover:text-orange-600"
+                className="bg-transparent text-orange-600  w-10 h-10 cursor-pointer absolute top-[50%] -translate-y-[50%] right-2 rounded z-[2] hover:text-orange-600 hover:bg-white"
                 onClick={nextSlide}
             />
 

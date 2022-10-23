@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userLoggedIn, userLoggedOut } from '../../redux/authSlice/authSlice';
 import ShowOnLogIn from '../../pages/HiddenLink/ShowOnLogIn';
 import ShowOnLogOut from '../../pages/HiddenLink/ShowonLogOut';
+import AdminOnlyRoute from '../Admin/AdminOnlyRoute';
 
 const DesktopMenu = () => {
     const { isLoggedIn, userName, userImage } = useSelector((state) => state.auth);
@@ -75,6 +76,13 @@ const DesktopMenu = () => {
             </div>
             <nav className="flex w-[75%] justify-around items-center">
                 <ul className="flex justify-between items-center list-none gap-2">
+                    <AdminOnlyRoute>
+                        <li className="my-0 mx-1">
+                            <button className="bg-blue-600 text-white px-3 py-2 w-full transition duration-100 ease-in-out rounded hover:bg-7lue-600">
+                                Admin
+                            </button>
+                        </li>
+                    </AdminOnlyRoute>
                     <li className="my-0 mx-1">
                         <NavLink
                             to="/"

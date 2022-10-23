@@ -5,6 +5,7 @@ const Home = () => {
     return (
         <div>
             <Slider />
+            <h1>Home</h1>
         </div>
     );
 };
