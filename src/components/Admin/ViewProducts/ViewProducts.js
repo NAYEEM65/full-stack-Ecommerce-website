@@ -1,10 +1,11 @@
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { collection, deleteDoc, doc, onSnapshot, orderBy, query } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { db } from '../../../firebase/config';
+import { db, storage } from '../../../firebase/config';
 import Loader from '../../Loader/Loader';
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
+import { deleteObject, ref } from 'firebase/storage';
 
 const ViewProducts = () => {
     const [products, setProducts] = useState([]);
@@ -27,6 +28,21 @@ const ViewProducts = () => {
             toast.error(error.message);
         }
     };
+    const deleteProduct = async (id, imageUrl) => {
+        setIsLoading(true);
+
+        try {
+            await deleteDoc(doc(db, 'products', id));
+            const storageRef = ref(storage, imageUrl);
+            await deleteObject(storageRef).then(() => {
+                toast.success('Product deleted successfully');
+                setIsLoading(false);
+            });
+        } catch (error) {
+            setIsLoading(false);
+            toast.error(error.message);
+        }
+    };
     useEffect(() => {
         fetchProducts();
     }, []);
@@ -35,7 +51,7 @@ const ViewProducts = () => {
         <>
             {isLoading && <Loader />}
             <div>
-                <h2 className="text-3xl text-slate-700 font-bold border-b-2 border-gray-400 w-fit">
+                <h2 className="text-3xl mb-2 text-slate-700 font-bold border-b-2 border-gray-400 w-fit">
                     All Products
                 </h2>
                 {products.length === 0 ? (
@@ -43,7 +59,7 @@ const ViewProducts = () => {
                 ) : (
                     <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
                         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <thead className="text-xs border-b border-t  border-gray-400 text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <th scope="col" class="py-3 px-6">
                                         Serial
@@ -71,7 +87,7 @@ const ViewProducts = () => {
                             <tbody>
                                 {products.map((product, index) => (
                                     <tr
-                                        className='"bg-white border-b dark:bg-gray-900 dark:border-gray-700"'
+                                        className="bg-white border-b dark:bg-gray-900 dark:border-gray-700 rounded even:bg-slate-200 transition duration-100 ease-in-out hover:bg-slate-300 "
                                         key={product.id}
                                     >
                                         <td className="py-4 px-6">{index + 1}</td>
@@ -103,7 +119,12 @@ const ViewProducts = () => {
                                                 <Link to="/admin/add-product">
                                                     <AiOutlineEdit className="text-green-500 text-xl cursor-pointer" />
                                                 </Link>
-                                                <AiOutlineDelete className="text-orange-500 text-xl cursor-pointer" />
+                                                <AiOutlineDelete
+                                                    className="text-orange-500 text-xl cursor-pointer"
+                                                    onClick={() =>
+                                                        deleteProduct(product.id, product.imageUrl)
+                                                    }
+                                                />
                                             </span>
                                         </td>
                                     </tr>

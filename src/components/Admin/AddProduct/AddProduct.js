@@ -96,11 +96,11 @@ const AddProduct = () => {
         <>
             {isLoading && <Loader />}
             <div>
-                <h1 className="text-4xl w-fit font-bold text-slate-800 border-b-2 border-gray-400 ">
+                <h1 className="text-4xl w-fit mx-auto font-bold text-slate-800 border-b-2 border-gray-400 ">
                     Add Product
                 </h1>
                 <form onSubmit={productSubmit}>
-                    <Card cardClass={'w-full max-w-[500px] p-4'}>
+                    <Card cardClass={'w-full max-w-[600px] mx-auto p-4'}>
                         <div className="flex flex-col gap-2 mb-2 items-start justify-start">
                             <label> Product Name:</label>
                             <input
