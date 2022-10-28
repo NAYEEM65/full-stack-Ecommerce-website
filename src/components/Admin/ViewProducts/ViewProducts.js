@@ -6,6 +6,7 @@ import Loader from '../../Loader/Loader';
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { deleteObject, ref } from 'firebase/storage';
+import Notiflix from 'notiflix';
 
 const ViewProducts = () => {
     const [products, setProducts] = useState([]);
@@ -27,6 +28,27 @@ const ViewProducts = () => {
             setIsLoading(false);
             toast.error(error.message);
         }
+    };
+    const confirmDelete = (id, imageUrl) => {
+        Notiflix.Confirm.show(
+            'Delete Product!!',
+            'Confirm to delete product',
+            'Delete',
+            'Cancel',
+            function okCb() {
+                deleteProduct(id, imageUrl);
+            },
+            function cancelCb() {
+                toast.warning('Cancel deleted');
+            },
+            {
+                width: '320px',
+                borderRadius: '8px',
+                titleColor: '#fb923c',
+                okButtonBackground: '#fb923c',
+                cssAnimationStyle: 'zoom',
+            },
+        );
     };
     const deleteProduct = async (id, imageUrl) => {
         setIsLoading(true);
@@ -122,7 +144,7 @@ const ViewProducts = () => {
                                                 <AiOutlineDelete
                                                     className="text-orange-500 text-xl cursor-pointer"
                                                     onClick={() =>
-                                                        deleteProduct(product.id, product.imageUrl)
+                                                        confirmDelete(product.id, product.imageUrl)
                                                     }
                                                 />
                                             </span>
