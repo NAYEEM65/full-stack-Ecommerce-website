@@ -7,11 +7,15 @@ import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { deleteObject, ref } from 'firebase/storage';
 import Notiflix from 'notiflix';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProducts } from '../../../redux/productSlice/productSlice';
 
 const ViewProducts = () => {
-    const [products, setProducts] = useState([]);
+    const { products } = useSelector((state) => state.product);
+    const dispatch = useDispatch();
+
     const [isLoading, setIsLoading] = useState(false);
-    const fetchProducts = async () => {
+    const getProducts = async () => {
         setIsLoading(true);
         try {
             const productsRef = collection(db, 'products');
@@ -21,8 +25,8 @@ const ViewProducts = () => {
                     id: doc.id,
                     ...doc.data(),
                 }));
-                setProducts(allProducts);
                 setIsLoading(false);
+                dispatch(fetchProducts({ products: allProducts }));
             });
         } catch (error) {
             setIsLoading(false);
@@ -66,7 +70,7 @@ const ViewProducts = () => {
         }
     };
     useEffect(() => {
-        fetchProducts();
+        getProducts();
     }, []);
 
     return (
@@ -83,25 +87,25 @@ const ViewProducts = () => {
                         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                             <thead className="text-xs border-b border-t  border-gray-400 text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
-                                    <th scope="col" class="py-3 px-6">
+                                    <th scope="col" className="py-3 px-6">
                                         Serial
                                     </th>
-                                    <th scope="col" class="py-3 px-6">
+                                    <th scope="col" className="py-3 px-6">
                                         Image
                                     </th>
-                                    <th scope="col" class="py-3 px-6">
+                                    <th scope="col" className="py-3 px-6">
                                         Name
                                     </th>
-                                    <th scope="col" class="py-3 px-6">
+                                    <th scope="col" className="py-3 px-6">
                                         Category
                                     </th>
-                                    <th scope="col" class="py-3 px-6">
+                                    <th scope="col" className="py-3 px-6">
                                         Price
                                     </th>
-                                    <th scope="col" class="py-3 px-6">
+                                    <th scope="col" className="py-3 px-6">
                                         Stock
                                     </th>
-                                    <th scope="col" class="py-3 px-6">
+                                    <th scope="col" className="py-3 px-6">
                                         Action
                                     </th>
                                 </tr>
@@ -121,7 +125,7 @@ const ViewProducts = () => {
                                             />
                                         </td>
                                         <td className="py-4 px-6">
-                                            {product.name.slice(0, 20)}...
+                                            {product.name.slice(0, 30)}...
                                         </td>
                                         <td className="py-4 px-6">{product.category}</td>
                                         <td className="py-4 px-6">${product.price}</td>
@@ -138,7 +142,7 @@ const ViewProducts = () => {
                                         </td>
                                         <td className="py-4 px-6">
                                             <span className="flex justify-around items-center">
-                                                <Link to="/admin/add-product">
+                                                <Link to={`/admin/add-product/${product.id}`}>
                                                     <AiOutlineEdit className="text-green-500 text-xl cursor-pointer" />
                                                 </Link>
                                                 <AiOutlineDelete

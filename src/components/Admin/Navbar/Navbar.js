@@ -33,7 +33,7 @@ const Navbar = () => {
                         </NavLink>
                     </li>
                     <li className="border-b-2 border-gray-300 pl-2 py-2 relative">
-                        <NavLink to="/admin/add-product" className={activeLink}>
+                        <NavLink to="/admin/add-product/add" className={activeLink}>
                             <span className="block w-full">Add Product</span>
                         </NavLink>
                     </li>

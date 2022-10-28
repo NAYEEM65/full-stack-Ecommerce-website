@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import Card from '../../Card/Card';
 import { db, storage } from '../../../firebase/config';
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { toast } from 'react-toastify';
-import { addDoc, collection, Timestamp } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom';
+import { addDoc, collection, doc, setDoc, Timestamp } from 'firebase/firestore';
+import { useNavigate, useParams } from 'react-router-dom';
 import Loader from '../../Loader/Loader';
+import { useSelector } from 'react-redux';
 
 const categories = [
     { id: 1, name: 'Laptop' },
@@ -13,21 +14,33 @@ const categories = [
     { id: 3, name: 'Fashion' },
     { id: 4, name: 'Phone' },
 ];
-
+const initialState = {
+    name: '',
+    imageUrl: '',
+    price: '',
+    stock: '',
+    category: '',
+    brand: '',
+    desc: '',
+};
 const AddProduct = () => {
-    const initialState = {
-        name: '',
-        imageUrl: '',
-        price: '',
-        stock: '',
-        category: '',
-        brand: '',
-        desc: '',
-    };
-    const [product, setProduct] = useState({ ...initialState });
+    const { products } = useSelector((state) => state.product);
+
     const [uploadProgress, setUploadProgress] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+    const { id } = useParams();
+    const detcetForm = (id, fn1, fn2) => {
+        if (id === 'add') {
+            return fn1;
+        }
+        return fn2;
+    };
+    const productEdit = products.find((p) => p.id === id);
+    const [product, setProduct] = useState(() => {
+        const newState = detcetForm(id, { ...initialState }, productEdit);
+        return newState;
+    });
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -68,11 +81,11 @@ const AddProduct = () => {
             },
         );
     };
-    const productSubmit = (e) => {
+    const addProduct = (e) => {
         e.preventDefault();
         setIsLoading(true);
         try {
-            const docRef = addDoc(collection(db, 'products'), {
+            addDoc(collection(db, 'products'), {
                 name: product.name,
                 imageUrl: product.imageUrl,
                 price: Number(product.price),
@@ -92,14 +105,41 @@ const AddProduct = () => {
             console.log(error.message);
         }
     };
+    const editProduct = (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+        if (product.imageUrl !== productEdit.imageUrl) {
+            const storageRef = ref(storage, productEdit.imageUrl);
+            deleteObject(storageRef);
+        }
+        try {
+            setDoc(doc(db, 'products', id), {
+                name: product.name,
+                imageUrl: product.imageUrl,
+                price: Number(product.price),
+                stock: Number(product.stock),
+                category: product.category,
+                brand: product.brand,
+                desc: product.desc,
+                createdAt: productEdit.createdAt,
+                editedAtt: Timestamp.now().toDate(),
+            });
+            setIsLoading(false);
+            toast.success('Product Edited successfully');
+            navigate('/admin/all-products');
+        } catch (error) {
+            setIsLoading(false);
+            toast.error(error.message);
+        }
+    };
     return (
         <>
             {isLoading && <Loader />}
             <div>
                 <h1 className="text-4xl w-fit mx-auto font-bold text-slate-800 border-b-2 border-gray-400 ">
-                    Add Product
+                    {detcetForm(id, 'Add New Product', 'Edit Product')}
                 </h1>
-                <form onSubmit={productSubmit}>
+                <form onSubmit={detcetForm(id, addProduct, editProduct)}>
                     <Card cardClass={'w-full max-w-[600px] mx-auto p-4'}>
                         <div className="flex flex-col gap-2 mb-2 items-start justify-start">
                             <label> Product Name:</label>
@@ -133,7 +173,7 @@ const AddProduct = () => {
                                         type="file"
                                         accept="image/*"
                                         placeholder="Product Image"
-                                        required
+                                        required={product.imageUrl ? false : true}
                                         name="image"
                                         className="rounded w-full bg-gray-200"
                                         onChange={(e) => handleImageChange(e)}
@@ -225,7 +265,7 @@ const AddProduct = () => {
                             type="submit"
                             className="bg-blue-600 text-white px-3 py-2 w-full transition duration-100 ease-in-out rounded hover:bg-7lue-600"
                         >
-                            Save Product
+                            {detcetForm(id, 'Save Product', 'Edit Product')}
                         </button>
                     </Card>
                 </form>

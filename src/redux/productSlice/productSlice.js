@@ -13,7 +13,7 @@ const productSlice = createSlice({
         fetchProducts: (state, action) => {
             state.products = action.payload.products;
         },
-        getPrice(state, action) {
+        getPrice: (state, action) => {
             const { products } = action.payload;
             const array = [];
             products.map((product) => {
