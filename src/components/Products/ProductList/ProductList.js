@@ -42,9 +42,9 @@ const ProductList = ({ products }) => {
             </div>
             <div
                 className={
-                    !grid
-                        ? 'w-96 bg-white m-1 h-[36rem] relative'
-                        : 'w-full h-[28rem] max-h-[32rem] flex bg-white my-4 mx-0'
+                    grid
+                        ? 'flex justify-around flex-wrap bg-white m-1 relative'
+                        : 'w-full flex flex-col bg-white my-4 mx-0 relative'
                 }
             >
                 {products?.length === 0 ? (
@@ -52,9 +52,7 @@ const ProductList = ({ products }) => {
                 ) : (
                     <>
                         {products.map((product) => (
-                            <div key={product.id}>
-                                <ProductItem product={product} grid={grid} />
-                            </div>
+                            <ProductItem product={product} grid={grid} key={product.id} />
                         ))}
                     </>
                 )}
