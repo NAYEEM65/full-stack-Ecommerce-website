@@ -53,7 +53,7 @@ const ProductList = ({ products }) => {
                         <option value="lowest-price">Lowest-price</option>
                         <option value="highest-price">Highest-Price</option>
                         <option value="a-z">A-Z</option>
-                        <option value="z-a">z-a</option>
+                        <option value="z-a">Z-A</option>
                     </select>
                 </div>
             </div>

@@ -1,18 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { filterByCategory } from '../../../redux/filterSlice/filterSlice';
+import { filterByBrand, filterByCategory } from '../../../redux/filterSlice/filterSlice';
 import { AiOutlineDoubleRight } from 'react-icons/ai';
 
 const ProductFilter = () => {
     const dispatch = useDispatch();
     const { products } = useSelector((state) => state.product);
     const [category, setCategory] = useState('All');
+    const [brand, setBrand] = useState('All');
 
     const allCategory = ['All', ...new Set(products.map((product) => product.category))];
     const filterProducts = (cat) => {
         setCategory(cat);
         dispatch(filterByCategory({ products, category: cat }));
     };
+    const allBrand = ['All', ...new Set(products.map((product) => product.brand))];
+
+    useEffect(() => {
+        dispatch(filterByBrand({ products, brand }));
+    }, [brand, dispatch, products]);
+
     return (
         <div className="">
             <h2 className="text-3xl mb-2 text-slate-700 font-bold border-b-2 border-gray-400 w-fit">
@@ -36,10 +43,15 @@ const ProductFilter = () => {
                 <div>
                     <h4 className="mt-4">Brand</h4>
                     <select
-                        name="brand"
+                        value={brand}
+                        onChange={(e) => setBrand(e.target.value)}
                         className="text-xl p-1 font-light w-[80%] border rounded outline-none"
                     >
-                        <option value="all">All</option>
+                        {allBrand.map((brand, index) => (
+                            <option key={index} value={brand}>
+                                {brand}
+                            </option>
+                        ))}
                     </select>
                     <h4 className="mt-4">Price</h4>
                     <p>$1500</p>

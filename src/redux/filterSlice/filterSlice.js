@@ -27,9 +27,19 @@ const filterSlice = createSlice({
             }
             state.filteredProducts = tempProducts;
         },
+        filterByBrand: (state, action) => {
+            const { products, brand } = action.payload;
+            let tempProducts = [];
+            if (brand === 'All') {
+                tempProducts = products;
+            } else {
+                tempProducts = products.filter((product) => product.brand === brand);
+            }
+            state.filteredProducts = tempProducts;
+        },
     },
 });
 
-export const { filterBySearch, filterByCategory } = filterSlice.actions;
+export const { filterBySearch, filterByCategory, filterByBrand } = filterSlice.actions;
 
 export default filterSlice.reducer;
