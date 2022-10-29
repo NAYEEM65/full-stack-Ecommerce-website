@@ -11,6 +11,7 @@ import { userLoggedIn, userLoggedOut } from '../../redux/authSlice/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import ShowOnLogIn from '../../pages/HiddenLink/ShowOnLogIn';
 import ShowOnLogOut from '../../pages/HiddenLink/ShowonLogOut';
+import { FaUserCircle } from 'react-icons/fa';
 
 const MobileMenu = () => {
     const { isLoggedIn, userName, userImage } = useSelector((state) => state.auth);
@@ -177,11 +178,15 @@ const MobileMenu = () => {
                         <li className="my-0 mx-1">
                             {isLoggedIn && (
                                 <span className="flex justify-center items-center gap-1 cursor-pointer text-orange-600">
-                                    <img
-                                        className="h-8 w-8 rounded-full"
-                                        src={userImage}
-                                        alt={userName}
-                                    />
+                                    {userImage ? (
+                                        <img
+                                            className="h-8 w-8 rounded-full"
+                                            src={userImage}
+                                            alt={userName}
+                                        />
+                                    ) : (
+                                        <FaUserCircle size={30} color="#fff" />
+                                    )}
                                     <p>{userName}</p>
                                 </span>
                             )}

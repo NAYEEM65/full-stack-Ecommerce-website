@@ -9,6 +9,7 @@ import { userLoggedIn, userLoggedOut } from '../../redux/authSlice/authSlice';
 import ShowOnLogIn from '../../pages/HiddenLink/ShowOnLogIn';
 import ShowOnLogOut from '../../pages/HiddenLink/ShowonLogOut';
 import AdminOnlyLink from '../Admin/AdminOnly/AdminOnlyLink';
+import { FaUserCircle } from 'react-icons/fa';
 
 const DesktopMenu = () => {
     const { isLoggedIn, userName, userImage } = useSelector((state) => state.auth);
@@ -140,7 +141,16 @@ const DesktopMenu = () => {
                     </NavLink>
                     {isLoggedIn && (
                         <div className="flex justify-center items-center gap-1 cursor-pointer text-orange-600">
-                            <img className="h-8 w-8 rounded-full" src={userImage} alt={userName} />
+                            {userImage ? (
+                                <img
+                                    className="h-8 w-8 rounded-full"
+                                    src={userImage}
+                                    alt={userName}
+                                />
+                            ) : (
+                                <FaUserCircle size={30} color="#fff" />
+                            )}
+
                             <p>{userName}</p>
                         </div>
                     )}

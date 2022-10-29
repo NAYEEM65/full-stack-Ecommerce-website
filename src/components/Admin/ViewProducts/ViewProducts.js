@@ -1,5 +1,5 @@
-import { collection, deleteDoc, doc, onSnapshot, orderBy, query } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
+import { deleteDoc, doc } from 'firebase/firestore';
+import React, { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { db, storage } from '../../../firebase/config';
 import Loader from '../../Loader/Loader';
