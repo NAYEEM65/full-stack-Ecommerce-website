@@ -28,6 +28,7 @@ const ProductFilter = () => {
                             max="1000"
                             value="40"
                             className=""
+                            onChange={(e) => console.log(e.target.value)}
                         />
                     </div>
                     <br />

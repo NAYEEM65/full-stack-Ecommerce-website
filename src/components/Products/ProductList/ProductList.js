@@ -1,12 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaFilter, FaThList } from 'react-icons/fa';
 import { BsGrid1X2Fill } from 'react-icons/bs';
 import Search from '../../Search/Search';
 import ProductItem from '../ProductItem/ProductItem';
+import { filterBySearch } from '../../../redux/filterSlice/filterSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const ProductList = ({ products }) => {
     const [grid, setGrid] = useState(true);
     const [search, setSearch] = useState('');
+    const { filteredProducts } = useSelector((state) => state.filter);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(
+            filterBySearch({
+                products,
+                search,
+            }),
+        );
+    }, [dispatch, products, search]);
     return (
         <div className="w-full" id="product">
             <div className="md:w-full border-b-2 border-gray-300 flex justify-between md:flex-row flex-col md:gap-0 gap-2 md:items-center items-start">
@@ -24,7 +37,7 @@ const ProductList = ({ products }) => {
                         onClick={() => setGrid(false)}
                     />
                     <p>
-                        <b>{products.length}</b> Product found.
+                        <b>{filteredProducts.length}</b> Product found.
                     </p>
                 </div>
                 <div>
@@ -51,11 +64,11 @@ const ProductList = ({ products }) => {
                         : 'w-full flex flex-col bg-white my-4 mx-0 relative'
                 }
             >
-                {products?.length === 0 ? (
+                {filteredProducts?.length === 0 ? (
                     <h2>No Products Found</h2>
                 ) : (
                     <>
-                        {products.map((product) => (
+                        {filteredProducts.map((product) => (
                             <ProductItem product={product} grid={grid} key={product.id} />
                         ))}
                     </>
