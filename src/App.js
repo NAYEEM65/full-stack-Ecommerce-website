@@ -9,6 +9,7 @@ import Home from './pages/Home/Home';
 import { ToastContainer } from 'react-toastify';
 import Admin from './pages/admin/Admin';
 import AdminOnlyRoute from './components/Admin/AdminOnly/AdminOnlyRoute';
+import ProductDetails from './components/Products/ProductDetails/ProductDetails';
 function App() {
     return (
         <Router>
@@ -19,7 +20,6 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/reset" element={<Reset />} />
-
                 <Route
                     path="/admin/*"
                     element={
@@ -28,6 +28,7 @@ function App() {
                         </AdminOnlyRoute>
                     }
                 />
+                <Route path="/product-details/:id" element={<ProductDetails />} />
             </Routes>
             <ToastContainer />
             <Footer />
