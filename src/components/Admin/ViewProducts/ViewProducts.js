@@ -9,30 +9,13 @@ import { deleteObject, ref } from 'firebase/storage';
 import Notiflix from 'notiflix';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../../redux/productSlice/productSlice';
+import useFetchCollection from '../../../hooks/useFetchCollection';
 
 const ViewProducts = () => {
     const { products } = useSelector((state) => state.product);
     const dispatch = useDispatch();
+    const { data, isLoading } = useFetchCollection('products');
 
-    const [isLoading, setIsLoading] = useState(false);
-    const getProducts = async () => {
-        setIsLoading(true);
-        try {
-            const productsRef = collection(db, 'products');
-            const q = query(productsRef, orderBy('createdAt', 'desc'));
-            onSnapshot(q, (snapshot) => {
-                const allProducts = snapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    ...doc.data(),
-                }));
-                setIsLoading(false);
-                dispatch(fetchProducts({ products: allProducts }));
-            });
-        } catch (error) {
-            setIsLoading(false);
-            toast.error(error.message);
-        }
-    };
     const confirmDelete = (id, imageUrl) => {
         Notiflix.Confirm.show(
             'Delete Product!!',
@@ -55,23 +38,19 @@ const ViewProducts = () => {
         );
     };
     const deleteProduct = async (id, imageUrl) => {
-        setIsLoading(true);
-
         try {
             await deleteDoc(doc(db, 'products', id));
             const storageRef = ref(storage, imageUrl);
             await deleteObject(storageRef).then(() => {
                 toast.success('Product deleted successfully');
-                setIsLoading(false);
             });
         } catch (error) {
-            setIsLoading(false);
             toast.error(error.message);
         }
     };
     useEffect(() => {
-        getProducts();
-    }, []);
+        dispatch(fetchProducts({ products: data }));
+    }, [data, dispatch]);
 
     return (
         <>
