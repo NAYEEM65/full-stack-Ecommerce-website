@@ -12,11 +12,15 @@ const ProductList = ({ products }) => {
             <div className="md:w-full border-b-2 border-gray-300 flex justify-between md:flex-row flex-col md:gap-0 gap-2 md:items-center items-start">
                 <div className="flex justify-center items-center gap-2">
                     <BsGrid1X2Fill
-                        className="text-2xl cursor-pointer text-orange-600"
+                        className={`text-2xl cursor-pointer ${
+                            grid ? 'text-orange-600' : 'text-gray-500'
+                        }`}
                         onClick={() => setGrid(true)}
                     />
                     <FaThList
-                        className="text-2xl cursor-pointer text-gray-500"
+                        className={`text-2xl cursor-pointer ${
+                            !grid ? 'text-orange-600' : 'text-gray-500'
+                        }`}
                         onClick={() => setGrid(false)}
                     />
                     <p>
@@ -31,7 +35,7 @@ const ProductList = ({ products }) => {
                         <FaFilter className="text-orange-600" />
                     </label>
                     <select className="border-none focus:outline-none focus:ring-transparent focus:appearance-none ">
-                        <option selected>Filter</option>
+                        <option defaultValue>Filter</option>
                         <option value="latest">Latest</option>
                         <option value="lowest-price">Lowest-price</option>
                         <option value="highest-price">Highest-Price</option>
@@ -43,7 +47,7 @@ const ProductList = ({ products }) => {
             <div
                 className={
                     grid
-                        ? 'flex justify-around flex-wrap bg-white m-1 relative'
+                        ? 'flex justify-around md:flex-wrap md:flex-row flex-col w-full bg-white m-1 relative'
                         : 'w-full flex flex-col bg-white my-4 mx-0 relative'
                 }
             >
