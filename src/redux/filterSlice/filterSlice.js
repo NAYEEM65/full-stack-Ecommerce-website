@@ -37,9 +37,15 @@ const filterSlice = createSlice({
             }
             state.filteredProducts = tempProducts;
         },
+        filterByPrice: (state, action) => {
+            const { products, price } = action.payload;
+            let tempProducts = products.filter((product) => product.price <= price);
+            state.filteredProducts = tempProducts;
+        },
     },
 });
 
-export const { filterBySearch, filterByCategory, filterByBrand } = filterSlice.actions;
+export const { filterBySearch, filterByCategory, filterByBrand, filterByPrice } =
+    filterSlice.actions;
 
 export default filterSlice.reducer;

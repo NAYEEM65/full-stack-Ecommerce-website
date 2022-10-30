@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { filterByBrand, filterByCategory } from '../../../redux/filterSlice/filterSlice';
+import {
+    filterByBrand,
+    filterByCategory,
+    filterByPrice,
+} from '../../../redux/filterSlice/filterSlice';
 import { AiOutlineDoubleRight } from 'react-icons/ai';
 
 const ProductFilter = () => {
     const dispatch = useDispatch();
     const { products } = useSelector((state) => state.product);
+    const { maxPrice, minPrice } = useSelector((state) => state.product);
     const [category, setCategory] = useState('All');
     const [brand, setBrand] = useState('All');
+    const [price, setPrice] = useState(maxPrice + 100);
 
     const allCategory = ['All', ...new Set(products.map((product) => product.category))];
     const filterProducts = (cat) => {
@@ -19,7 +25,9 @@ const ProductFilter = () => {
     useEffect(() => {
         dispatch(filterByBrand({ products, brand }));
     }, [brand, dispatch, products]);
-
+    useEffect(() => {
+        dispatch(filterByPrice({ products, price }));
+    }, [dispatch, price, products]);
     return (
         <div className="">
             <h2 className="text-3xl mb-2 text-slate-700 font-bold border-b-2 border-gray-400 w-fit">
@@ -54,16 +62,15 @@ const ProductFilter = () => {
                         ))}
                     </select>
                     <h4 className="mt-4">Price</h4>
-                    <p>$1500</p>
+                    <p>${price}</p>
                     <div className="">
                         <input
                             type="range"
-                            name="price"
-                            min="100"
-                            max="1000"
-                            value="40"
-                            className=""
-                            onChange={(e) => console.log(e.target.value)}
+                            min={minPrice}
+                            max={maxPrice}
+                            value={price}
+                            className="range range-success"
+                            onChange={(e) => setPrice(e.target.value)}
                         />
                     </div>
                     <br />

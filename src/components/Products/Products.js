@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useFetchCollection from '../../hooks/useFetchCollection';
-import { fetchProducts } from '../../redux/productSlice/productSlice';
+import { fetchProducts, getPrice } from '../../redux/productSlice/productSlice';
 import ProductLoader from '../Loader/ProductLoader';
 import ProductFilter from './ProductFilter/ProductFilter';
 import ProductList from './ProductList/ProductList';
@@ -12,7 +12,8 @@ const Products = () => {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(fetchProducts({ products: data }));
-    }, [data, dispatch]);
+        dispatch(getPrice({ products: data }));
+    }, [data, dispatch, products]);
 
     return (
         <section>
