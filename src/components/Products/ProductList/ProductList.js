@@ -5,6 +5,7 @@ import Search from '../../Search/Search';
 import ProductItem from '../ProductItem/ProductItem';
 import { filterBySearch } from '../../../redux/filterSlice/filterSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import Pagination from '../../Pagination/Pagination ';
 
 const ProductList = ({ products }) => {
     const [grid, setGrid] = useState(true);
@@ -12,6 +13,16 @@ const ProductList = ({ products }) => {
     const { filteredProducts } = useSelector((state) => state.filter);
     const dispatch = useDispatch();
 
+    //pagination state
+    const [currentPage, setCurrentPage] = useState(1);
+    const [proudctPerPage, setProudctPerPage] = useState(3);
+
+    //Get the current products list
+    const indexOfLastProduct = currentPage * proudctPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - proudctPerPage;
+    const currentProduct = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+    const totalProductCount = filteredProducts.length;
+    console.log(proudctPerPage);
     useEffect(() => {
         dispatch(
             filterBySearch({
@@ -20,6 +31,7 @@ const ProductList = ({ products }) => {
             }),
         );
     }, [dispatch, products, search]);
+
     return (
         <div className="w-full bg-slate-100" id="product">
             <div className="md:w-full border-b-2 border-gray-300 flex justify-between md:flex-row flex-col md:gap-0 gap-2 md:items-center items-start">
@@ -64,16 +76,23 @@ const ProductList = ({ products }) => {
                         : 'w-full flex flex-col bg-slate-100 my-4 mx-0 relative'
                 }
             >
-                {filteredProducts?.length === 0 ? (
+                {currentProduct?.length === 0 ? (
                     <h2>No Products Found</h2>
                 ) : (
                     <>
-                        {filteredProducts.map((product) => (
+                        {currentProduct.map((product) => (
                             <ProductItem product={product} grid={grid} key={product.id} />
                         ))}
                     </>
                 )}
             </div>
+            <Pagination
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                proudctPerPage={proudctPerPage}
+                setProudctPerPage={setProudctPerPage}
+                totalProductCount={totalProductCount}
+            />
         </div>
     );
 };
