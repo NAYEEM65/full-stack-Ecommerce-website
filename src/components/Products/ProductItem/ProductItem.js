@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const ProductItem = ({ product, grid }) => {
     return grid ? (
-        <div className="md:w-[25%] w-full md:my-10 my-2">
+        <div className="md:w-[24%] w-full md:my-10 my-2">
             <div className="flex justify-center items-center w-full">
                 <div className="bg-white border-b-2 w-full hover:shadow-xl rounded-lg ">
                     <div className="pb-4 border-b">

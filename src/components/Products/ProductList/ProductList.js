@@ -21,7 +21,7 @@ const ProductList = ({ products }) => {
         );
     }, [dispatch, products, search]);
     return (
-        <div className="w-full" id="product">
+        <div className="w-full bg-slate-100" id="product">
             <div className="md:w-full border-b-2 border-gray-300 flex justify-between md:flex-row flex-col md:gap-0 gap-2 md:items-center items-start">
                 <div className="flex justify-center items-center gap-2">
                     <BsGrid1X2Fill
@@ -60,8 +60,8 @@ const ProductList = ({ products }) => {
             <div
                 className={
                     grid
-                        ? 'flex justify-around md:flex-wrap md:flex-row flex-col w-full bg-white m-1 relative'
-                        : 'w-full flex flex-col bg-white my-4 mx-0 relative'
+                        ? 'flex justify-around md:flex-wrap gap-1 md:flex-row flex-col w-full bg-slate-100 m-1 relative'
+                        : 'w-full flex flex-col bg-slate-100 my-4 mx-0 relative'
                 }
             >
                 {filteredProducts?.length === 0 ? (

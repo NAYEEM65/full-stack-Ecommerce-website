@@ -18,10 +18,16 @@ const ProductFilter = () => {
     const allCategory = ['All', ...new Set(products.map((product) => product.category))];
     const filterProducts = (cat) => {
         setCategory(cat);
-        dispatch(filterByCategory({ products, category: cat }));
     };
     const allBrand = ['All', ...new Set(products.map((product) => product.brand))];
-
+    const clearFilter = () => {
+        setCategory('All');
+        setBrand('All');
+        setPrice(maxPrice + 100);
+    };
+    useEffect(() => {
+        dispatch(filterByCategory({ products, category: category }));
+    }, [category, dispatch, products]);
     useEffect(() => {
         dispatch(filterByBrand({ products, brand }));
     }, [brand, dispatch, products]);
@@ -29,7 +35,7 @@ const ProductFilter = () => {
         dispatch(filterByPrice({ products, price }));
     }, [dispatch, price, products]);
     return (
-        <div className="">
+        <div className="mt-5 fixed w-[20%] top-18">
             <h2 className="text-3xl mb-2 text-slate-700 font-bold border-b-2 border-gray-400 w-fit">
                 Categories
             </h2>
@@ -69,12 +75,15 @@ const ProductFilter = () => {
                             min={minPrice}
                             max={maxPrice}
                             value={price}
-                            className="range range-success"
+                            className="range range-success w-[80%]"
                             onChange={(e) => setPrice(e.target.value)}
                         />
                     </div>
                     <br />
-                    <button className="block w-[80%] bg-orange-500 hover:bg-orange-600 text-white border-none px-3 py-2 rounded uppercase font-poppins font-medium">
+                    <button
+                        onClick={() => clearFilter()}
+                        className="block w-[80%] btn btn-warning bg-orange-500 hover:bg-orange-600 text-white border-none rounded uppercase font-poppins font-medium"
+                    >
                         Clear Filter
                     </button>
                 </div>
