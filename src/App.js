@@ -10,6 +10,7 @@ import { ToastContainer } from 'react-toastify';
 import Admin from './pages/admin/Admin';
 import AdminOnlyRoute from './components/Admin/AdminOnly/AdminOnlyRoute';
 import ProductDetails from './components/Products/ProductDetails/ProductDetails';
+import Cart from './pages/Cart/Cart';
 function App() {
     return (
         <Router>
@@ -29,6 +30,7 @@ function App() {
                     }
                 />
                 <Route path="/product-details/:id" element={<ProductDetails />} />
+                <Route path="/cart" element={<Cart />} />
             </Routes>
             <ToastContainer />
             <Footer />
