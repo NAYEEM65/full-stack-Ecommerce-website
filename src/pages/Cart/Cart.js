@@ -1,8 +1,13 @@
 import React from 'react';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { addToCart } from '../../redux/cartSlice/cartSlice';
+import { NavLink } from 'react-router-dom';
+import {
+    addToCart,
+    clearCart,
+    decreaseCart,
+    removeFromCart,
+} from '../../redux/cartSlice/cartSlice';
 
 const Cart = () => {
     const { cartItems, cartQuantity, cartTotalPrice } = useSelector((state) => state.cart);
@@ -11,11 +16,17 @@ const Cart = () => {
         dispatch(addToCart(cart));
     };
 
-    const decreaseCart = (cart) => {
-        console.log(cart);
+    const decreaseItem = (cart) => {
+        dispatch(decreaseCart(cart));
+    };
+    const removeItem = (cart) => {
+        dispatch(removeFromCart(cart));
+    };
+    const clearItem = () => {
+        dispatch(clearCart());
     };
     return (
-        <section className="min-h-[90vh]">
+        <section className="min-h-[85vh]">
             <h2 className="text-3xl mb-2 text-slate-700 font-bold border-b-2 border-gray-400 w-fit">
                 Shopping Cart
             </h2>
@@ -24,7 +35,7 @@ const Cart = () => {
                     <p>Your cart is currently empty.</p>
                     <br />
                     <div>
-                        <link to="/#products">&larr; Continue shopping</link>
+                        <NavLink to="/#products">&larr; Continue shopping</NavLink>
                     </div>
                 </div>
             ) : (
@@ -74,7 +85,7 @@ const Cart = () => {
                                     <td className="py-4 px-6 flex justify-start items-center">
                                         <button
                                             className="btn hover:bg-gray-500 bg-gray-400 rounded"
-                                            onClick={() => decreaseCart(product)}
+                                            onClick={() => decreaseItem(product)}
                                         >
                                             -
                                         </button>
@@ -93,24 +104,31 @@ const Cart = () => {
                                     </td>
                                     <td className="py-4 px-6">
                                         <span className="flex justify-around items-center">
-                                            <Link to={`/admin/add-product/${product.id}`}>
-                                                <AiOutlineDelete className="text-red-600 text-2xl cursor-pointer" />
-                                            </Link>
+                                            <AiOutlineDelete
+                                                className="text-red-600 text-2xl cursor-pointer"
+                                                onClick={() => removeItem(product)}
+                                            />
                                         </span>
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
-                    <div className="flex justify-between w-full">
-                        <div className="w-1/2">
-                            <button className="">Clear cart</button>
+                    <div className="flex justify-between w-full mt-10 px-10">
+                        <div className="w-1/2 flex justify-start items-center gap-5">
+                            <button
+                                className="px-3 py-2 rounded bg-red-500 text-white font-semibold w-1/4"
+                                onClick={clearItem}
+                            >
+                                Clear cart
+                            </button>
+                            <button className="px-3 py-2 rounded bg-orange-500 text-white font-semibold w-1/4">
+                                <NavLink to="/#products">Continue Shopping</NavLink>
+                            </button>
                         </div>
                         <div className="mr-10">
                             <div className="w-full h-[2px] bg-slate-700" />
-                            <button>
-                                <Link to="/#products">Continue Shopping</Link>
-                            </button>
+
                             <div>
                                 <p>Cart Item(s): {cartQuantity}</p>
                                 <h2 className="text-2xl text-slate-700">
@@ -119,7 +137,7 @@ const Cart = () => {
                                 <small>taxes and shipping cost calculated at checkout</small>
                             </div>
                             <button className="px-3 py-2 rounded bg-orange-500 text-white font-semibold w-full">
-                                <Link to="/checkout">Checkout</Link>
+                                <NavLink to="/checkout">Checkout</NavLink>
                             </button>
                         </div>
                     </div>
