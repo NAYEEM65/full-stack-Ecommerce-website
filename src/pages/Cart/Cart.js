@@ -1,13 +1,21 @@
 import React from 'react';
 import { AiOutlineDelete } from 'react-icons/ai';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { addToCart } from '../../redux/cartSlice/cartSlice';
 
 const Cart = () => {
-    const { cartItems } = useSelector((state) => state.cart);
-    console.log(cartItems);
+    const { cartItems, cartQuantity, cartTotalPrice } = useSelector((state) => state.cart);
+    const dispatch = useDispatch();
+    const increaseCart = (cart) => {
+        dispatch(addToCart(cart));
+    };
+
+    const decreaseCart = (cart) => {
+        console.log(cart);
+    };
     return (
-        <section>
+        <section className="min-h-[90vh]">
             <h2 className="text-3xl mb-2 text-slate-700 font-bold border-b-2 border-gray-400 w-fit">
                 Shopping Cart
             </h2>
@@ -20,7 +28,7 @@ const Cart = () => {
                     </div>
                 </div>
             ) : (
-                <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
+                <div className="overflow-x-auto relative sm:rounded-lg">
                     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead className="text-xs border-b border-t  border-gray-400 text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
@@ -64,11 +72,17 @@ const Cart = () => {
                                     <td className="py-4 px-6">{product.name.slice(0, 30)}...</td>
                                     <td className="py-4 px-6">&#36; {product.price}</td>
                                     <td className="py-4 px-6 flex justify-start items-center">
-                                        <button className="btn hover:bg-gray-500 bg-gray-400 rounded">
+                                        <button
+                                            className="btn hover:bg-gray-500 bg-gray-400 rounded"
+                                            onClick={() => decreaseCart(product)}
+                                        >
                                             -
                                         </button>
                                         <p className="mx-3">{product.cartQuantity}</p>
-                                        <button className="btn hover:bg-gray-500 bg-gray-400 rounded">
+                                        <button
+                                            className="btn hover:bg-gray-500 bg-gray-400 rounded"
+                                            onClick={() => increaseCart(product)}
+                                        >
                                             +
                                         </button>
                                     </td>
@@ -94,7 +108,19 @@ const Cart = () => {
                         </div>
                         <div className="mr-10">
                             <div className="w-full h-[2px] bg-slate-700" />
-                            <h1>Cart Summary </h1>
+                            <button>
+                                <Link to="/#products">Continue Shopping</Link>
+                            </button>
+                            <div>
+                                <p>Cart Item(s): {cartQuantity}</p>
+                                <h2 className="text-2xl text-slate-700">
+                                    Subtotal: {cartTotalPrice.toFixed(2)}
+                                </h2>
+                                <small>taxes and shipping cost calculated at checkout</small>
+                            </div>
+                            <button className="px-3 py-2 rounded bg-orange-500 text-white font-semibold w-full">
+                                <Link to="/checkout">Checkout</Link>
+                            </button>
                         </div>
                     </div>
                 </div>
