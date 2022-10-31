@@ -1,11 +1,19 @@
 import { doc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { db } from '../../../firebase/config';
+import {
+    addToCart,
+    calculateTotalQuantity,
+    decreaseCart,
+} from '../../../redux/cartSlice/cartSlice';
 import Loader from '../../Loader/Loader';
 
 const ProductDetails = () => {
+    const { cartItems } = useSelector((state) => state.cart);
+    const dispatch = useDispatch();
     const { id } = useParams();
     const [product, setProduct] = useState({});
     const [isLoading, setIsLoading] = useState(false);
@@ -25,10 +33,25 @@ const ProductDetails = () => {
             toast.warning('no product found');
         }
     };
+    const cart = cartItems.find((c) => c.id === id);
+    console.log(cart);
+    const addCartHandler = () => {
+        dispatch(addToCart(product));
+    };
+    const increaseCart = (cart) => {
+        dispatch(addToCart(cart));
+    };
+
+    const decreaseItem = (cart) => {
+        dispatch(decreaseCart(cart));
+    };
     useEffect(() => {
         getProduct();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    console.log(product);
+    useEffect(() => {
+        dispatch(calculateTotalQuantity(cartItems));
+    }, [cartItems, dispatch]);
 
     return (
         <>
@@ -62,17 +85,28 @@ const ProductDetails = () => {
                                     {product.brand}
                                 </p>
                             </div>
-                            <div className="flex justify-start items-center w-1/3">
-                                <button className="btn hover:bg-gray-500 bg-gray-400 rounded">
-                                    -
-                                </button>
-                                <p className="mx-3">0</p>
-                                <button className="btn hover:bg-gray-500 bg-gray-400 rounded">
-                                    +
-                                </button>
-                            </div>
+                            {cart?.cartQuantity && (
+                                <div className="flex justify-start items-center w-1/3">
+                                    <button
+                                        onClick={() => decreaseItem(product)}
+                                        className="btn hover:bg-gray-500 bg-gray-400 rounded"
+                                    >
+                                        -
+                                    </button>
+                                    <p className="mx-3">{cart.cartQuantity}</p>
+                                    <button
+                                        onClick={() => increaseCart(product)}
+                                        className="btn hover:bg-gray-500 bg-gray-400 rounded"
+                                    >
+                                        +
+                                    </button>
+                                </div>
+                            )}
                             <div className="flex justify-start items-center gap-2 my-2">
-                                <button className="block w-1/3 bg-orange-500 hover:bg-orange-600 text-white border-2 border-gray-800 px-3 py-2 rounded uppercase font-poppins font-medium">
+                                <button
+                                    onClick={addCartHandler}
+                                    className="block w-1/3 bg-orange-500 hover:bg-orange-600 text-white border-2 border-gray-800 px-3 py-2 rounded uppercase font-poppins font-medium"
+                                >
                                     Add to cart
                                 </button>
                                 <NavLink

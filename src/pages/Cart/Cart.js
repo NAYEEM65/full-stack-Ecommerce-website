@@ -1,32 +1,79 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import Loader from '../../components/Loader/Loader';
 import {
     addToCart,
+    calculateSubTotal,
+    calculateTotalQuantity,
     clearCart,
     decreaseCart,
     removeFromCart,
+    saveUrl,
 } from '../../redux/cartSlice/cartSlice';
 
 const Cart = () => {
     const { cartItems, cartQuantity, cartTotalPrice } = useSelector((state) => state.cart);
     const dispatch = useDispatch();
+    const [isLoading, setIsLoading] = useState(false);
     const increaseCart = (cart) => {
-        dispatch(addToCart(cart));
+        setIsLoading(true);
+        try {
+            dispatch(addToCart(cart));
+            setIsLoading(false);
+        } catch (error) {
+            console.log(error.message);
+            setIsLoading(false);
+        }
     };
 
     const decreaseItem = (cart) => {
-        dispatch(decreaseCart(cart));
+        setIsLoading(true);
+        try {
+            dispatch(decreaseCart(cart));
+            setIsLoading(false);
+        } catch (error) {
+            console.log(error.message);
+            setIsLoading(false);
+        }
     };
     const removeItem = (cart) => {
-        dispatch(removeFromCart(cart));
+        setIsLoading(true);
+        try {
+            dispatch(removeFromCart(cart));
+            setIsLoading(false);
+        } catch (error) {
+            console.log(error.message);
+            setIsLoading(false);
+        }
     };
     const clearItem = () => {
-        dispatch(clearCart());
+        setIsLoading(true);
+        try {
+            dispatch(clearCart());
+            setIsLoading(false);
+        } catch (error) {
+            console.log(error.message);
+            setIsLoading(false);
+        }
     };
+    useEffect(() => {
+        setIsLoading(true);
+        try {
+            dispatch(calculateSubTotal(cartItems));
+            dispatch(calculateTotalQuantity(cartItems));
+            dispatch(saveUrl(''));
+            setIsLoading(false);
+        } catch (error) {
+            console.log(error.message);
+            setIsLoading(false);
+        }
+    }, [cartItems, dispatch]);
     return (
         <section className="min-h-[85vh]">
+            {isLoading && <Loader />}
             <h2 className="text-3xl mb-2 text-slate-700 font-bold border-b-2 border-gray-400 w-fit">
                 Shopping Cart
             </h2>

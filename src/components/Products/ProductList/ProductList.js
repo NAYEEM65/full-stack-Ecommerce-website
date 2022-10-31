@@ -22,7 +22,7 @@ const ProductList = ({ products }) => {
     const indexOfFirstProduct = indexOfLastProduct - proudctPerPage;
     const currentProduct = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
     const totalProductCount = filteredProducts.length;
-    console.log(proudctPerPage);
+
     useEffect(() => {
         dispatch(
             filterBySearch({
