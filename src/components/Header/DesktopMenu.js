@@ -10,9 +10,11 @@ import ShowOnLogIn from '../../pages/HiddenLink/ShowOnLogIn';
 import ShowOnLogOut from '../../pages/HiddenLink/ShowonLogOut';
 import AdminOnlyLink from '../Admin/AdminOnly/AdminOnlyLink';
 import { FaUserCircle } from 'react-icons/fa';
+import { calculateTotalQuantity } from '../../redux/cartSlice/cartSlice';
 
 const DesktopMenu = () => {
     const { isLoggedIn, userName, userImage } = useSelector((state) => state.auth);
+    const { cartQuantity, cartItems } = useSelector((state) => state.cart);
     const [uName, setUname] = useState('');
     const activeClass = (state) => (state.isActive ? `text-orange-600 border-b-2` : '');
     //assigning location variable
@@ -65,6 +67,9 @@ const DesktopMenu = () => {
             }
         });
     }, [dispatch, uName]);
+    useEffect(() => {
+        dispatch(calculateTotalQuantity(cartItems));
+    }, [cartItems, dispatch]);
 
     return (
         <div className="w-full h-20 my-0 mx-auto p-4 md:flex hidden justify-between items-center relative">
@@ -136,7 +141,10 @@ const DesktopMenu = () => {
 
                     <NavLink to="/cart" className={activeClass}>
                         <span className="flex justify-between items-center gap-1 hover:text-orange-600 transition duration-100 relative">
-                            Cart <BsCartFill /> <p className="absolute -top-2 -right-2">0</p>
+                            Cart <BsCartFill />{' '}
+                            <p className="absolute -top-[14px] -right-[14px] h-[18px] w-[18px] text-center rounded-full bg-orange-500 text-white">
+                                {cartQuantity}
+                            </p>
                         </span>
                     </NavLink>
                     {isLoggedIn && (

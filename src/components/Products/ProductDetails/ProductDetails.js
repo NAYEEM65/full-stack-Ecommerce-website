@@ -34,7 +34,7 @@ const ProductDetails = () => {
         }
     };
     const cart = cartItems.find((c) => c.id === id);
-    console.log(cart);
+
     const addCartHandler = () => {
         dispatch(addToCart(product));
     };

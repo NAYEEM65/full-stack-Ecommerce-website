@@ -12,9 +12,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import ShowOnLogIn from '../../pages/HiddenLink/ShowOnLogIn';
 import ShowOnLogOut from '../../pages/HiddenLink/ShowonLogOut';
 import { FaUserCircle } from 'react-icons/fa';
+import { calculateTotalQuantity } from '../../redux/cartSlice/cartSlice';
 
 const MobileMenu = () => {
     const { isLoggedIn, userName, userImage } = useSelector((state) => state.auth);
+    const { cartQuantity, cartItems } = useSelector((state) => state.cart);
     const [isMenu, setIsMenu] = useState(false);
     const [uName, setUname] = useState('');
 
@@ -74,6 +76,9 @@ const MobileMenu = () => {
             }
         });
     }, [dispatch, uName]);
+    useEffect(() => {
+        dispatch(calculateTotalQuantity(cartItems));
+    }, [cartItems, dispatch]);
     return (
         <div className="w-full my-0 mx-auto p-4 md:hidden flex flex-col transition duration-200 justify-between relative">
             <div className="flex justify-between items-center gap-2">
@@ -85,7 +90,10 @@ const MobileMenu = () => {
                 <div className="flex items-center gap-4">
                     <NavLink to="/cart" className={activeClass} onClick={handleItemClick}>
                         <span className="flex justify-between items-center gap-1 hover:text-orange-600 transition duration-100 relative">
-                            Cart <BsCartFill /> <p className="absolute -top-2 -right-2">0</p>
+                            Cart <BsCartFill />{' '}
+                            <p className="absolute -top-[14px] -right-[14px] h-[18px] w-[18px] text-center rounded-full bg-orange-500 text-white">
+                                {cartQuantity}
+                            </p>
                         </span>
                     </NavLink>
                     {isMenu ? (
