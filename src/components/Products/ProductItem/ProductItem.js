@@ -1,7 +1,15 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { addToCart } from '../../../redux/cartSlice/cartSlice';
 
 const ProductItem = ({ product, grid }) => {
+    const { cartItems } = useSelector((state) => state.cart);
+    const dispatch = useDispatch();
+
+    const addCartHandler = () => {
+        dispatch(addToCart(product));
+    };
     return grid ? (
         <div className="md:w-[24%] w-full md:my-10 my-2">
             <div className="flex justify-center items-center w-full">
@@ -32,7 +40,10 @@ const ProductItem = ({ product, grid }) => {
                     </div>
 
                     <div className="w-full p-2">
-                        <button className="block w-full bg-orange-500 hover:bg-orange-600 text-white border-2 border-gray-800 px-3 py-2 rounded uppercase font-poppins font-medium">
+                        <button
+                            onClick={addCartHandler}
+                            className="block w-full bg-orange-500 hover:bg-orange-600 text-white border-2 border-gray-800 px-3 py-2 rounded uppercase font-poppins font-medium"
+                        >
                             Add to cart
                         </button>
                     </div>
