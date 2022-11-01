@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import Loader from '../../components/Loader/Loader';
 import {
     addToCart,
@@ -16,6 +16,7 @@ import {
 
 const Cart = () => {
     const { cartItems, cartQuantity, cartTotalPrice } = useSelector((state) => state.cart);
+    const { isLoggedIn } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
     const increaseCart = (cart) => {
@@ -71,6 +72,17 @@ const Cart = () => {
             setIsLoading(false);
         }
     }, [cartItems, dispatch]);
+
+    const url = window.location.href;
+    const navigate = useNavigate();
+    const checkout = () => {
+        if (isLoggedIn) {
+            navigate('/checkout');
+        } else {
+            dispatch(saveUrl(url));
+            navigate('/login');
+        }
+    };
     return (
         <section className="min-h-[85vh]">
             {isLoading && <Loader />}
@@ -183,8 +195,11 @@ const Cart = () => {
                                 </h2>
                                 <small>taxes and shipping cost calculated at checkout</small>
                             </div>
-                            <button className="px-3 py-2 rounded bg-orange-500 text-white font-semibold w-full">
-                                <NavLink to="/checkout">Checkout</NavLink>
+                            <button
+                                className="px-3 py-2 rounded bg-orange-500 text-white font-semibold w-full cursor-pointer"
+                                onClick={checkout}
+                            >
+                                Checkout
                             </button>
                         </div>
                     </div>

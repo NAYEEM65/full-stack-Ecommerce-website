@@ -7,8 +7,10 @@ import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '../../firebase/config';
 import { toast } from 'react-toastify';
 import Loader from '../../components/Loader/Loader';
+import { useSelector } from 'react-redux';
 
 const Login = () => {
+    const { previousURL } = useSelector((state) => state.cart);
     const [isPassShow, setIsPassShow] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -25,7 +27,7 @@ const Login = () => {
                 // Signed in
                 setIsLoading(false);
                 toast.success('Login successful');
-                navigate('/');
+                redirectUser();
                 // ...
             })
             .catch((error) => {
@@ -38,7 +40,7 @@ const Login = () => {
         signInWithPopup(auth, provider)
             .then(() => {
                 toast.success('Login success');
-                navigate('/');
+                redirectUser();
                 // ...
             })
             .catch((error) => {
@@ -46,6 +48,12 @@ const Login = () => {
                 const errorMessage = error.message;
                 toast.error(errorMessage);
             });
+    };
+    const redirectUser = () => {
+        if (previousURL.includes('cart')) {
+            return navigate('/cart');
+        }
+        navigate('/');
     };
     return (
         <>

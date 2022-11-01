@@ -11,6 +11,7 @@ import Admin from './pages/admin/Admin';
 import AdminOnlyRoute from './components/Admin/AdminOnly/AdminOnlyRoute';
 import ProductDetails from './components/Products/ProductDetails/ProductDetails';
 import Cart from './pages/Cart/Cart';
+import Checkout from './pages/Checkout/Checkout';
 function App() {
     return (
         <Router>
@@ -31,6 +32,7 @@ function App() {
                 />
                 <Route path="/product-details/:id" element={<ProductDetails />} />
                 <Route path="/cart" element={<Cart />} />
+                <Route path="/checkout" element={<Checkout />} />
             </Routes>
             <ToastContainer />
             <Footer />
