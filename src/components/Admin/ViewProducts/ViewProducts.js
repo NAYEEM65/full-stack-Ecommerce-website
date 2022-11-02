@@ -10,6 +10,7 @@ import Notiflix from 'notiflix';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../../redux/productSlice/productSlice';
 import useFetchCollection from '../../../hooks/useFetchCollection';
+import PageHeading from '../../common/PageHeading';
 
 const ViewProducts = () => {
     const { products } = useSelector((state) => state.product);
@@ -56,9 +57,7 @@ const ViewProducts = () => {
         <>
             {isLoading && <Loader />}
             <div>
-                <h2 className="text-3xl mb-2 text-slate-700 font-bold border-b-2 border-gray-400 w-fit">
-                    All Products
-                </h2>
+                <PageHeading>All Products</PageHeading>
                 {products.length === 0 ? (
                     <h2>No Product found</h2>
                 ) : (
