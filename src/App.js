@@ -13,6 +13,7 @@ import ProductDetails from './components/Products/ProductDetails/ProductDetails'
 import Cart from './pages/Cart/Cart';
 import Checkout from './pages/Checkout/Checkout';
 import CheckoutDetails from './pages/Checkout/CheckoutDetails';
+import Success from './pages/Checkout/Success';
 function App() {
     return (
         <Router>
@@ -33,8 +34,9 @@ function App() {
                 />
                 <Route path="/product-details/:id" element={<ProductDetails />} />
                 <Route path="/cart" element={<Cart />} />
-                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/order/checkout" element={<Checkout />} />
                 <Route path="/checkout-details" element={<CheckoutDetails />} />
+                <Route path="/checkout-success" element={<Success />} />
             </Routes>
             <ToastContainer />
             <Footer />
