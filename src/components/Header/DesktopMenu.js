@@ -110,35 +110,6 @@ const DesktopMenu = () => {
                     </li>
                 </ul>
                 <div className="flex justify-between items-center gap-4">
-                    <div className="flex justify-between items-center gap-4">
-                        <ShowOnLogOut>
-                            <NavLink to="/login" className={activeClass}>
-                                <span className="hover:text-orange-600 transition duration-100">
-                                    Login
-                                </span>
-                            </NavLink>
-                        </ShowOnLogOut>
-                        <ShowOnLogOut>
-                            <NavLink to="/register" className={activeClass}>
-                                <span className="hover:text-orange-600 transition duration-100">
-                                    Register
-                                </span>
-                            </NavLink>
-                        </ShowOnLogOut>
-                        <NavLink to="/order-history" className={activeClass}>
-                            <span className="hover:text-orange-600 transition duration-100">
-                                My Orders
-                            </span>
-                        </NavLink>
-                        <ShowOnLogIn>
-                            <NavLink to="/" onClick={logoutUser}>
-                                <span className="hover:text-orange-600 transition duration-100">
-                                    Logout
-                                </span>
-                            </NavLink>
-                        </ShowOnLogIn>
-                    </div>
-
                     <NavLink to="/cart" className={activeClass}>
                         <span className="flex justify-between items-center gap-1 hover:text-orange-600 transition duration-100 relative">
                             Cart <BsCartFill />{' '}
@@ -147,19 +118,95 @@ const DesktopMenu = () => {
                             </p>
                         </span>
                     </NavLink>
-                    {isLoggedIn && (
-                        <div className="flex justify-center items-center gap-1 cursor-pointer text-orange-600">
-                            {userImage ? (
-                                <img
-                                    className="h-8 w-8 rounded-full"
-                                    src={userImage}
-                                    alt={userName}
-                                />
-                            ) : (
-                                <FaUserCircle size={30} color="#fff" />
-                            )}
+                    {isLoggedIn ? (
+                        <div className="dropdown dropdown-end">
+                            <label tabIndex={0} className="btn m-1">
+                                <div className="flex justify-center items-center gap-1 cursor-pointer text-orange-600">
+                                    {userImage ? (
+                                        <img
+                                            className="h-8 w-8 rounded-full"
+                                            src={userImage}
+                                            alt={userName}
+                                        />
+                                    ) : (
+                                        <FaUserCircle size={30} color="#fff" />
+                                    )}
 
-                            <p>{userName}</p>
+                                    <p>{userName}</p>
+                                </div>
+                            </label>
+                            <ul
+                                tabIndex={0}
+                                className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+                            >
+                                <li>
+                                    {' '}
+                                    <ShowOnLogOut>
+                                        <NavLink to="/login" className={activeClass}>
+                                            <span className="hover:text-orange-600 transition duration-100">
+                                                Login
+                                            </span>
+                                        </NavLink>
+                                    </ShowOnLogOut>
+                                </li>
+                                <li>
+                                    {' '}
+                                    <ShowOnLogOut>
+                                        <NavLink to="/register" className={activeClass}>
+                                            <span className="hover:text-orange-600 transition duration-100">
+                                                Register
+                                            </span>
+                                        </NavLink>
+                                    </ShowOnLogOut>
+                                </li>
+                                <li>
+                                    <ShowOnLogIn>
+                                        <NavLink to="/order-history" className={activeClass}>
+                                            <span className="hover:text-orange-600 text-slate-800 transition duration-100">
+                                                My Orders
+                                            </span>
+                                        </NavLink>
+                                    </ShowOnLogIn>
+                                </li>
+                                <li>
+                                    <ShowOnLogIn>
+                                        <NavLink to="/" onClick={logoutUser}>
+                                            <span className="hover:text-orange-600 transition duration-100">
+                                                Logout
+                                            </span>
+                                        </NavLink>
+                                    </ShowOnLogIn>
+                                </li>
+                            </ul>
+                        </div>
+                    ) : (
+                        <div className="flex justify-between items-center gap-4">
+                            <ShowOnLogOut>
+                                <NavLink to="/login" className={activeClass}>
+                                    <span className="hover:text-orange-600 transition duration-100">
+                                        Login
+                                    </span>
+                                </NavLink>
+                            </ShowOnLogOut>
+                            <ShowOnLogOut>
+                                <NavLink to="/register" className={activeClass}>
+                                    <span className="hover:text-orange-600 transition duration-100">
+                                        Register
+                                    </span>
+                                </NavLink>
+                            </ShowOnLogOut>
+                            <NavLink to="/order-history" className={activeClass}>
+                                <span className="hover:text-orange-600 transition duration-100">
+                                    My Orders
+                                </span>
+                            </NavLink>
+                            <ShowOnLogIn>
+                                <NavLink to="/" onClick={logoutUser}>
+                                    <span className="hover:text-orange-600 transition duration-100">
+                                        Logout
+                                    </span>
+                                </NavLink>
+                            </ShowOnLogIn>
                         </div>
                     )}
                 </div>
