@@ -15,8 +15,8 @@ const CheckoutForm = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { userId, email } = useSelector((state) => state.auth);
-    const { cartTotalAmount } = useSelector((state) => state.cart);
-
+    const { cartTotalPrice, cartItems } = useSelector((state) => state.cart);
+    const { shippingAddress } = useSelector((state) => state.checkout);
     const [message, setMessage] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -52,29 +52,28 @@ const CheckoutForm = () => {
     }, [stripe]);
     // Save order to Order History
     const saveOrder = () => {
-        console.log('order Saved');
-        // const today = new Date();
-        // const date = today.toDateString();
-        // const time = today.toLocaleTimeString();
-        // const orderConfig = {
-        //   userId,
-        //   userEmail: email,
-        //   orderDate: date,
-        //   orderTime: time,
-        //   orderAmount: cartTotalAmount,
-        //   orderStatus: "Order Placed...",
-        //   cartItems,
-        //   shippingAddress,
-        //   createdAt: Timestamp.now().toDate(),
-        // };
-        // try {
-        //   addDoc(collection(db, "orders"), orderConfig);
-        //   dispatch(clearCart());
-        //   toast.success("Order saved");
-        //   navigate("/checkout-success");
-        // } catch (error) {
-        //   toast.error(error.message);
-        // }
+        const today = new Date();
+        const date = today.toDateString();
+        const time = today.toLocaleTimeString();
+        const orderConfig = {
+            userId,
+            userEmail: email,
+            orderDate: date,
+            orderTime: time,
+            orderAmount: cartTotalPrice,
+            orderStatus: 'Order Placed...',
+            cartItems,
+            shippingAddress,
+            createdAt: Timestamp.now().toDate(),
+        };
+        try {
+            addDoc(collection(db, 'orders'), orderConfig);
+            dispatch(clearCart());
+            toast.success('Order saved');
+            navigate('/checkout-success');
+        } catch (error) {
+            toast.error(error.message);
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -93,7 +92,7 @@ const CheckoutForm = () => {
                     // Make sure to change this to your payment completion page
                     return_url: 'http://localhost:3000/checkout-success',
                 },
-                redirect_url: 'if_required',
+                redirect: 'if_required',
             })
             .then((result) => {
                 // ok - paymentIntent // bad - error
