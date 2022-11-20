@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
@@ -69,7 +70,6 @@ const CheckoutForm = () => {
         try {
             addDoc(collection(db, 'orders'), orderConfig);
             dispatch(clearCart());
-            toast.success('Order saved');
             navigate('/checkout-success');
         } catch (error) {
             toast.error(error.message);
