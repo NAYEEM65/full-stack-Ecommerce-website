@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import accessImage from '../../assets/access-account.svg';
+import loginImage from '../../assets/loginforNSSHOP.json';
 import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,6 +8,7 @@ import { auth, provider } from '../../firebase/config';
 import { toast } from 'react-toastify';
 import Loader from '../../components/Loader/Loader';
 import { useSelector } from 'react-redux';
+import Lottie from 'lottie-react';
 
 const Login = () => {
     const { previousURL } = useSelector((state) => state.cart);
@@ -60,7 +61,8 @@ const Login = () => {
             {isLoading && <Loader />}
             <section className="w-full py-12 px-0 min-h-[80vh] flex justify-center items-center">
                 <div className="animate-slide-down hidden md:block">
-                    <img src={accessImage} className="w-auto h-[55vh]" alt="login" />
+                    {/* <img src={accessImage} className="w-auto h-[55vh]" alt="login" /> */}
+                    <Lottie animationData={loginImage} className="h-[300px]" loop={false} />
                 </div>
                 <div className="w-[35rem] p-10 animate-slide-up text-center shadow-lg">
                     <h2 className="text-orange-600 font-bold text-3xl">Login</h2>
