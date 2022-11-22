@@ -77,7 +77,7 @@ const OrderDetails = () => {
 
                                         <td className="py-4 px-6">
                                             <NavLink
-                                                to="/review"
+                                                to={`/review-product/${ord.id}`}
                                                 className="bg-blue-500 hover:bg-blue-600 text-white rounded px-3 py-2"
                                             >
                                                 Review Product

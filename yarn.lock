@@ -5484,6 +5484,11 @@ globule@^1.0.0:
     lodash "^4.17.21"
     minimatch "~3.0.2"
 
+goober@^2.0.37:
+  version "2.1.11"
+  resolved "https://registry.yarnpkg.com/goober/-/goober-2.1.11.tgz#bbd71f90d2df725397340f808dbe7acc3118e610"
+  integrity sha512-5SS2lmxbhqH0u9ABEWq7WPU69a4i2pYcHeCxqaNq6Cw3mnrF0ghWNM4tEGid4dKy8XNIAUbuThuozDHHKJVh3A==
+
 graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.2.0, graceful-fs@^4.2.3, graceful-fs@^4.2.4, graceful-fs@^4.2.6, graceful-fs@^4.2.9:
   version "4.2.10"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.10.tgz#147d3a006da4ca3ce14728c7aefc287c367d7a6c"
@@ -8696,6 +8701,13 @@ react-scripts@5.0.0:
     workbox-webpack-plugin "^6.4.1"
   optionalDependencies:
     fsevents "^2.3.2"
+
+react-star-rate@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/react-star-rate/-/react-star-rate-0.2.0.tgz#11857c6d351129aff7a809209b115b484f8f0edb"
+  integrity sha512-t5LNriqbQH8gcRdWolSkDc+Iox68UKyS3olbKDKXcg07PRmYxF96Q0sDot1M2hmDDv9iR0Cm74DMbAGvLTMdag==
+  dependencies:
+    goober "^2.0.37"
 
 react-toastify@^9.0.8:
   version "9.0.8"
