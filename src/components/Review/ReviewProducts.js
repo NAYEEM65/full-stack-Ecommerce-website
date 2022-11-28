@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import loadingImage from '../../assets/loading-animation-blue.json';
 
 const ReviewProducts = () => {
-    const [rate, setRate] = useState(0);
+    const [rating, setRating] = useState(0);
     const [review, setReview] = useState('');
     const [product, setProduct] = useState(null);
     const { id } = useParams();
@@ -30,7 +30,7 @@ const ReviewProducts = () => {
             userId,
             userName,
             productID: id,
-            rate,
+            rating,
             review,
             reviewDate: date,
             createdAt: Timestamp.now().toDate(),
@@ -38,7 +38,7 @@ const ReviewProducts = () => {
         try {
             addDoc(collection(db, 'reviews'), reviewConfig);
             toast.success('Review submitted successfully');
-            setRate(0);
+            setRating(0);
             setReview('');
         } catch (error) {
             toast.error(error.message);
@@ -67,9 +67,9 @@ const ReviewProducts = () => {
                                 <div>
                                     <label>Rating:</label>
                                     <StarsRating
-                                        value={rate}
+                                        value={rating}
                                         onChange={(rate) => {
-                                            setRate(rate);
+                                            setRating(rate);
                                         }}
                                     />
                                 </div>

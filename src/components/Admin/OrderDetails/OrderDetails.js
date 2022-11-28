@@ -73,7 +73,9 @@ const OrderDetails = () => {
 
                                         <td className="py-4 px-6">${ord.price}</td>
                                         <td className="py-4 px-6">{ord.cartQuantity}</td>
-                                        <td className="py-4 px-6">${order.orderAmount}</td>
+                                        <td className="py-4 px-6">
+                                            ${ord.price * ord.cartQuantity}
+                                        </td>
 
                                         <td className="py-4 px-6">
                                             <NavLink
