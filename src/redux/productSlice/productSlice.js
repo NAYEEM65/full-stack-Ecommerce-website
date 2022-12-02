@@ -13,6 +13,9 @@ const productSlice = createSlice({
         fetchProducts: (state, action) => {
             state.products = action.payload.products;
         },
+        storeProduct: (state, action) => {
+            state.products = action.payload.products;
+        },
         getPrice: (state, action) => {
             const { products } = action.payload;
             const array = [];
@@ -29,6 +32,6 @@ const productSlice = createSlice({
     },
 });
 
-export const { fetchProducts, getPrice } = productSlice.actions;
+export const { fetchProducts, getPrice, storeProduct } = productSlice.actions;
 
 export default productSlice.reducer;
