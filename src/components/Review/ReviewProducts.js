@@ -9,6 +9,8 @@ import { db } from '../../firebase/config';
 import { toast } from 'react-toastify';
 
 import loadingImage from '../../assets/loading-animation-blue.json';
+import StarRatings from 'react-star-ratings';
+import ReactStarsRating from 'react-awesome-stars-rating';
 
 const ReviewProducts = () => {
     const [rating, setRating] = useState(0);
@@ -16,7 +18,7 @@ const ReviewProducts = () => {
     const [product, setProduct] = useState(null);
     const { id } = useParams();
     const { document } = useFetchDocument('products', id);
-    const { userId, userName } = useSelector((state) => state.auth);
+    const { userId, userName, userImage } = useSelector((state) => state.auth);
 
     useEffect(() => {
         setProduct(document);
@@ -30,6 +32,7 @@ const ReviewProducts = () => {
             userId,
             userName,
             productID: id,
+            userImage,
             rating,
             review,
             reviewDate: date,
@@ -63,14 +66,18 @@ const ReviewProducts = () => {
                 <div>
                     <form onSubmit={(e) => submitReview(e)}>
                         <div className="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
-                            <div className="flex justify-between flex-col px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
-                                <div>
+                            <div className="flex justify-between flex-col px-4 py-4 bg-white rounded-t-lg dark:bg-gray-800">
+                                <div className="flex justify-start gap-2 items-center py-2 mb-2">
                                     <label>Rating:</label>
-                                    <StarsRating
-                                        value={rating}
+                                    <ReactStarsRating
+                                        primaryColor="#f55d25"
+                                        secondaryColor="#cbd3e3"
+                                        className="flex justify-center gap-1 text-gray-300"
                                         onChange={(rate) => {
                                             setRating(rate);
                                         }}
+                                        value={rating}
+                                        size={20}
                                     />
                                 </div>
                                 <div>

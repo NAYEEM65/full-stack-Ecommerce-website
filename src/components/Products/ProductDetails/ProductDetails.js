@@ -1,9 +1,14 @@
+/* eslint-disable no-unused-vars */
 import { doc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { db } from '../../../firebase/config';
+import useFetchCollection from '../../../hooks/useFetchCollection';
+import useFetchDocument from '../../../hooks/useFetchDocument';
+import ReactStarsRating from 'react-awesome-stars-rating';
+import userImg from '../../../assets/user-512.webp';
 import {
     addToCart,
     calculateTotalQuantity,
@@ -17,6 +22,10 @@ const ProductDetails = () => {
     const { id } = useParams();
     const [product, setProduct] = useState({});
     const [isLoading, setIsLoading] = useState(false);
+    const { document } = useFetchDocument('products', id);
+    const { data } = useFetchCollection('reviews');
+
+    const filterReviews = data.filter((review) => review.productID === id);
     const getProduct = async () => {
         setIsLoading(true);
         const productRef = doc(db, 'products', id);
@@ -119,8 +128,42 @@ const ProductDetails = () => {
                         </div>
                     </div>
                     <div className="mt-32">
-                        <h2>Product Reviews</h2>
-                        <p>No Reviews found</p>
+                        <h2 className="text-4xl">Product Reviews</h2>
+                        {filterReviews.length === 0 ? (
+                            <p>There are no rewview for this product</p>
+                        ) : (
+                            filterReviews.map((review, index) => (
+                                <div
+                                    key={index}
+                                    className="flex justify-start flex-col p-5 gap-3 border-2 border-gray-300"
+                                >
+                                    <div className="flex justify-start items-center gap-2">
+                                        <ReactStarsRating
+                                            primaryColor="#f55d25"
+                                            secondaryColor="#cbd3e3"
+                                            className="flex justify-center gap-1 text-gray-300"
+                                            value={review.rating}
+                                            isEdit={false}
+                                            size={15}
+                                        />
+                                    </div>
+
+                                    <p>{review.review}</p>
+                                    <p>
+                                        <b>{review.reviewDate}</b>
+                                    </p>
+                                    <div className="flex justify-start items-center gap-1">
+                                        <b>By: </b>
+                                        <img
+                                            src={review.userImage ? review.userImage : userImg}
+                                            alt="user"
+                                            className="h-8 rounded-full"
+                                        />
+                                        <p>{review.userName}</p>
+                                    </div>
+                                </div>
+                            ))
+                        )}
                     </div>
                 </div>
             </div>
