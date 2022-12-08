@@ -3,7 +3,7 @@ import { FaFilter, FaThList } from 'react-icons/fa';
 import { BsGrid1X2Fill } from 'react-icons/bs';
 import Search from '../../Search/Search';
 import ProductItem from '../ProductItem/ProductItem';
-import { filterBySearch } from '../../../redux/filterSlice/filterSlice';
+import { filterBySearch, filterBySort } from '../../../redux/filterSlice/filterSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import Pagination from '../../Pagination/Pagination ';
 
@@ -24,6 +24,7 @@ const ProductList = ({ products }) => {
     const totalProductCount = filteredProducts.length;
 
     useEffect(() => {
+        dispatch(filterBySort(products));
         dispatch(
             filterBySearch({
                 products,

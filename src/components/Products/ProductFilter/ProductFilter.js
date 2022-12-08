@@ -35,7 +35,7 @@ const ProductFilter = () => {
         dispatch(filterByPrice({ products, price }));
     }, [dispatch, price, products]);
     return (
-        <div className="mt-5 fixed w-[20%] top-18">
+        <div className="mt-5 top-18">
             <h2 className="text-3xl mb-2 text-slate-700 font-bold border-b-2 border-gray-400 w-fit">
                 Categories
             </h2>

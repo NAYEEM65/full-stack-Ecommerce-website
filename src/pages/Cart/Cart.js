@@ -1,3 +1,4 @@
+import Notiflix, { Notify } from 'notiflix';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { AiOutlineDelete } from 'react-icons/ai';
@@ -41,9 +42,27 @@ const Cart = () => {
         }
     };
     const removeItem = (cart) => {
-        setIsLoading(true);
         try {
-            dispatch(removeFromCart(cart));
+            Notiflix.Confirm.show(
+                'Delete Product!!',
+                'Confirm to delete product',
+                'Delete',
+                'Cancel',
+                function okCb() {
+                    dispatch(removeFromCart(cart));
+                },
+                function cancelCb() {
+                    Notify.failure('Cancel deleted');
+                },
+                {
+                    width: '320px',
+                    borderRadius: '8px',
+                    titleColor: '#fb923c',
+                    okButtonBackground: '#fb923c',
+                    cssAnimationStyle: 'zoom',
+                },
+            );
+
             setIsLoading(false);
         } catch (error) {
             console.log(error.message);
@@ -53,7 +72,26 @@ const Cart = () => {
     const clearItem = () => {
         setIsLoading(true);
         try {
-            dispatch(clearCart());
+            Notiflix.Confirm.show(
+                'Clear Cart!!',
+                'Confirm to delete product',
+                'Delete',
+                'Cancel',
+                function okCb() {
+                    dispatch(clearCart());
+                },
+                function cancelCb() {
+                    Notify.failure('Operation cancelled');
+                },
+                {
+                    width: '320px',
+                    borderRadius: '8px',
+                    titleColor: '#fb923c',
+                    okButtonBackground: '#fb923c',
+                    cssAnimationStyle: 'zoom',
+                },
+            );
+
             setIsLoading(false);
         } catch (error) {
             console.log(error.message);
