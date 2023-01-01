@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import AddProduct from '../../components/Admin/AddProduct/AddProduct';
+import AllUsers from '../../components/Admin/AllUsers/AllUsers';
 import Home from '../../components/Admin/Home/Home';
 import Navbar from '../../components/Admin/Navbar/Navbar';
 import OrderDetails from '../../components/Admin/OrderDetails/OrderDetails';
@@ -20,6 +21,7 @@ const Admin = () => {
                     <Route path="add-product/:id" element={<AddProduct />} />
                     <Route path="orders" element={<Orders />} />
                     <Route path="order-details/:id" element={<OrderDetails />} />
+                    <Route path="users" element={<AllUsers />} />
                 </Routes>
             </div>
         </div>

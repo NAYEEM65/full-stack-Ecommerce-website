@@ -24,22 +24,27 @@ const Navbar = () => {
                 <ul>
                     <li className="border-b-2 border-gray-300 pl-2 py-2 relative">
                         <NavLink to="/admin/home" className={activeLink}>
-                            <span className="block w-full">Home</span>
+                            <span className="block w-full font-semibold">Home</span>
                         </NavLink>
                     </li>
                     <li className="border-b-2 border-gray-300 pl-2 py-2 relative">
                         <NavLink to="/admin/all-products" className={activeLink}>
-                            <span className="block w-full ">All Products</span>
+                            <span className="block w-full font-semibold ">All Products</span>
                         </NavLink>
                     </li>
                     <li className="border-b-2 border-gray-300 pl-2 py-2 relative">
                         <NavLink to="/admin/add-product/add" className={activeLink}>
-                            <span className="block w-full">Add Product</span>
+                            <span className="block w-full font-semibold">Add Product</span>
                         </NavLink>
                     </li>
                     <li className="border-b-2 border-gray-300 pl-2 py-2 relative">
                         <NavLink to="/admin/orders" className={activeLink}>
-                            <span className="block w-full">Orders</span>
+                            <span className="block w-full font-semibold">View Orders</span>
+                        </NavLink>
+                    </li>
+                    <li className="border-b-2 border-gray-300 pl-2 py-2 relative">
+                        <NavLink to="/admin/users" className={activeLink}>
+                            <span className="block w-full font-semibold">All Users</span>
                         </NavLink>
                     </li>
                 </ul>

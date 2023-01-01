@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import useFetchCollection from '../../../hooks/useFetchCollection';
 import { calcTotalOrderAmount, storeOrders } from '../../../redux/orderSlice/OrderSlice';
 import { storeProduct } from '../../../redux/productSlice/productSlice';
+import Chart from '../Chart/Chart';
 
 const earningIcon = <FaDollarSign size={30} className="text-white" />;
 const productIcon = <FaShoppingCart size={30} className="text-blue-500" />;
@@ -54,6 +55,9 @@ const Home = () => {
                     icon={orderIcon}
                     classList="border-b-orange-500"
                 />
+            </div>
+            <div>
+                <Chart />
             </div>
         </div>
     );

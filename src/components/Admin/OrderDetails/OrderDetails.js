@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import { NavLink, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import useFetchDocument from '../../../hooks/useFetchDocument';
 import PageHeading from '../../common/PageHeading';
 import Loader from '../../Loader/Loader';

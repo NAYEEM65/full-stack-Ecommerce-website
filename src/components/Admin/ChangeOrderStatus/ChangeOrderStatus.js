@@ -18,7 +18,7 @@ const ChangeOrderStatus = ({ order, id }) => {
         setIsLoading(true);
 
         const orderConfig = {
-            userID: order.userId,
+            userId: order.userId,
             userEmail: order.userEmail,
             orderDate: order.orderDate,
             orderTime: order.orderTime,
@@ -32,7 +32,7 @@ const ChangeOrderStatus = ({ order, id }) => {
         Notiflix.Confirm.show(
             'Change Order Status',
             ' Do You Want to Change Order Status?',
-            'Delete',
+            `${status}`,
             'Cancel',
             function okCb() {
                 try {
