@@ -35,7 +35,7 @@ const Pagination = ({ currentPage, setCurrentPage, proudctPerPage, totalProductC
     }
 
     return (
-        <div className="btn-group flex justify-start items-center gap-2">
+        <div className="btn-group flex justify-start items-center gap-2 py-5">
             <nav aria-label="Page navigation example">
                 <ul className="inline-flex items-center -space-x-px">
                     <button

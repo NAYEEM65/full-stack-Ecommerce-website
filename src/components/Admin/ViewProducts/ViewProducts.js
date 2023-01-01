@@ -11,12 +11,26 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../../redux/productSlice/productSlice';
 import useFetchCollection from '../../../hooks/useFetchCollection';
 import PageHeading from '../../common/PageHeading';
+import { useState } from 'react';
+import Search from '../../Search/Search';
+import { filterBySearch, filterBySort } from '../../../redux/filterSlice/filterSlice';
+import Pagination from '../../Pagination/Pagination ';
 
 const ViewProducts = () => {
     const { products } = useSelector((state) => state.product);
     const dispatch = useDispatch();
     const { data, isLoading } = useFetchCollection('products');
+    const [search, setSearch] = useState('');
+    const { filteredProducts } = useSelector((state) => state.filter);
+    //pagination state
+    const [currentPage, setCurrentPage] = useState(1);
+    const [proudctPerPage, setProudctPerPage] = useState(3);
 
+    //Get the current products list
+    const indexOfLastProduct = currentPage * proudctPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - proudctPerPage;
+    const currentProduct = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+    const totalProductCount = filteredProducts.length;
     const confirmDelete = (id, imageUrl) => {
         Notiflix.Confirm.show(
             'Delete Product!!',
@@ -51,7 +65,14 @@ const ViewProducts = () => {
     };
     useEffect(() => {
         dispatch(fetchProducts({ products: data }));
-    }, [data, dispatch]);
+        dispatch(filterBySort(products));
+        dispatch(
+            filterBySearch({
+                products,
+                search,
+            }),
+        );
+    }, [data, dispatch, products, search]);
 
     return (
         <>
@@ -62,6 +83,20 @@ const ViewProducts = () => {
                     <h2>No Product found</h2>
                 ) : (
                     <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
+                        <div>
+                            <h2 className="text-base">
+                                {filteredProducts.length !== 0 && filteredProducts.length}{' '}
+                                {filteredProducts.length === 1
+                                    ? 'Product'
+                                    : filteredProducts.length === 0
+                                    ? 'No Product'
+                                    : 'Products'}{' '}
+                                Found
+                            </h2>
+                        </div>
+                        <div>
+                            <Search value={search} onChange={(e) => setSearch(e.target.value)} />
+                        </div>
                         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                             <thead className="text-xs border-b border-t  border-gray-400 text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
@@ -89,7 +124,7 @@ const ViewProducts = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {products.map((product, index) => (
+                                {currentProduct.map((product, index) => (
                                     <tr
                                         className="bg-white border-b dark:bg-gray-900 dark:border-gray-700 rounded even:bg-slate-200 transition duration-100 ease-in-out hover:bg-slate-300 "
                                         key={product.id}
@@ -137,6 +172,13 @@ const ViewProducts = () => {
                         </table>
                     </div>
                 )}
+                <Pagination
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    proudctPerPage={proudctPerPage}
+                    setProudctPerPage={setProudctPerPage}
+                    totalProductCount={totalProductCount}
+                />
             </div>
         </>
     );

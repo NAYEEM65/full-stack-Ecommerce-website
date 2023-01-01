@@ -7,9 +7,9 @@ import { storeOrders } from '../../../redux/orderSlice/OrderSlice';
 
 const Orders = () => {
     const { data, isLoading } = useFetchCollection('orders');
-    const { orderHistory, totalOrderAmount } = useSelector((state) => state.orders);
+    // const { orderHistory, totalOrderAmount } = useSelector((state) => state.orders);
 
-    const { userId } = useSelector((state) => state.auth);
+    // const { userId } = useSelector((state) => state.auth);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
