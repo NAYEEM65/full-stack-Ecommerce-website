@@ -4,7 +4,6 @@ import Header from './components/Header/Header';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import Reset from './pages/auth/Reset';
-import Contact from './pages/Contact/Contact';
 import Home from './pages/Home/Home';
 import { ToastContainer } from 'react-toastify';
 import Admin from './pages/admin/Admin';
@@ -15,9 +14,10 @@ import Checkout from './pages/Checkout/Checkout';
 import CheckoutDetails from './pages/Checkout/CheckoutDetails';
 import Success from './pages/Checkout/Success';
 import OrderHistory from './components/OrderHistory/OrderHistory';
-
+import Contact from './pages/Contact/Contact';
 import ReviewProducts from './components/Review/ReviewProducts';
 import OrderDetails from './components/OrderDetails/OrderDetails';
+import NotFound from './pages/NotFound/NotFound';
 function App() {
     return (
         <Router>
@@ -44,6 +44,7 @@ function App() {
                 <Route path="/checkout-success" element={<Success />} />
                 <Route path="/order-details/:id" element={<OrderDetails />} />
                 <Route path="/review-product/:id" element={<ReviewProducts />} />
+                <Route path="*" element={<NotFound />} />
             </Routes>
             <ToastContainer />
             <Footer />
