@@ -8,7 +8,9 @@ import { storeOrders } from '../../../redux/orderSlice/OrderSlice';
 const Orders = () => {
     const { data, isLoading } = useFetchCollection('orders');
     const { orderHistory, totalOrderAmount } = useSelector((state) => state.orders);
-    console.log(orderHistory);
+
+    const { userId } = useSelector((state) => state.auth);
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
     useEffect(() => {
@@ -45,6 +47,7 @@ const Orders = () => {
                             <tr
                                 onClick={() => handleClick(order.id)}
                                 className="bg-white border-b cursor-pointer dark:bg-gray-900 dark:border-gray-700"
+                                key={index}
                             >
                                 <th
                                     scope="row"

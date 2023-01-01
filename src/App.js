@@ -15,8 +15,9 @@ import Checkout from './pages/Checkout/Checkout';
 import CheckoutDetails from './pages/Checkout/CheckoutDetails';
 import Success from './pages/Checkout/Success';
 import OrderHistory from './components/OrderHistory/OrderHistory';
-import OrderDetails from './components/Admin/OrderDetails/OrderDetails';
+
 import ReviewProducts from './components/Review/ReviewProducts';
+import OrderDetails from './components/OrderDetails/OrderDetails';
 function App() {
     return (
         <Router>
